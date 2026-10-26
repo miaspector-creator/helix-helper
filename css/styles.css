@@ -1,0 +1,324 @@
+:root {
+  --bg: #061914;
+  --bg-elevated: #0d231e;
+  --panel: rgba(10, 29, 24, 0.88);
+  --panel-strong: #102d29;
+  --panel-soft: rgba(18, 35, 31, 0.8);
+  --surface: #f5f9f8;
+  --surface-muted: #dfe9e7;
+  --ink: #e7f4f2;
+  --ink-soft: #b8d2ce;
+  --ink-strong: #f3fbf8;
+  --primary: #72f0c2;
+  --primary-strong: #2bc59a;
+  --secondary: #86c9ff;
+  --tertiary: #ff8f8a;
+  --line: rgba(169, 205, 198, 0.28);
+  --danger: #ff7a6b;
+  --danger-soft: rgba(255, 122, 107, 0.12);
+  --info: #69b5ff;
+  --info-soft: rgba(105, 181, 255, 0.12);
+  --shadow: rgba(2, 12, 10, 0.55);
+  --mark-bg: rgba(255, 195, 90, 0.26);
+  --mark-text: #fff4d0;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #edf5f3;
+    --bg-elevated: #f9fbfa;
+    --panel: rgba(255, 255, 255, 0.9);
+    --panel-strong: #ebf4f2;
+    --panel-soft: rgba(233, 243, 240, 0.9);
+    --surface: #123a32;
+    --surface-muted: #d8ece6;
+    --ink: #153c35;
+    --ink-soft: #457167;
+    --ink-strong: #0d2722;
+    --primary: #1fa67d;
+    --primary-strong: #0e7b62;
+    --secondary: #3b82f6;
+    --tertiary: #ea5b54;
+    --line: rgba(22, 66, 58, 0.14);
+    --danger: #d6453a;
+    --danger-soft: rgba(214, 69, 58, 0.08);
+    --info: #2d6cdf;
+    --info-soft: rgba(45, 108, 223, 0.08);
+    --shadow: rgba(12, 45, 38, 0.12);
+    --mark-bg: rgba(255, 203, 71, 0.25);
+    --mark-text: #0d2b28;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(114, 240, 194, 0.16), transparent 28%),
+    radial-gradient(circle at bottom, rgba(134, 201, 255, 0.14), transparent 35%),
+    var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", "Inter", sans-serif;
+}
+
+button,
+textarea,
+output {
+  font: inherit;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.app-shell {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.app-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 24px 48px var(--shadow);
+  overflow: hidden;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(114, 240, 194, 0.16), rgba(134, 201, 255, 0.12));
+  border: 1px solid rgba(114, 240, 194, 0.38);
+}
+
+.brand-mark::before {
+  content: "H";
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: var(--ink-strong);
+}
+
+.app-body {
+  padding: 18px 18px 16px;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.sequence-input {
+  width: 100%;
+  min-height: 150px;
+  padding: 16px 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(10, 17, 16, 0.18);
+  color: var(--ink-strong);
+  resize: vertical;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  word-break: break-all;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.sequence-input:focus {
+  outline: 2px solid rgba(114, 240, 194, 0.7);
+  outline-offset: 2px;
+}
+
+.tool-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-1px);
+}
+
+.button.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #042d25;
+  flex: 1 1 140px;
+}
+
+.button.secondary {
+  background: rgba(134, 201, 255, 0.1);
+  color: var(--ink-strong);
+  border: 1px solid rgba(134, 201, 255, 0.32);
+}
+
+.button.tertiary {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--ink-strong);
+  border: 1px solid var(--line);
+}
+
+.message-box {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border-left: 4px solid var(--info);
+  background: var(--info-soft);
+  color: var(--ink-strong);
+}
+
+.message-box.error {
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.message-box p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.message-box p + p {
+  margin-top: 8px;
+}
+
+.sequence-markup {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  word-break: break-all;
+}
+
+.sequence-markup mark {
+  background: var(--mark-bg);
+  color: var(--mark-text);
+  border-radius: 4px;
+  padding: 0 1px;
+}
+
+.results {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.results-header {
+  margin: 0 0 14px;
+  color: var(--ink-strong);
+  font-size: 1.15rem;
+  letter-spacing: -0.03em;
+}
+
+.result-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.result-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px 12px 10px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel-soft);
+}
+
+.result-label {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.result-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.result-line output {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  color: var(--ink-strong);
+}
+
+.copy-button {
+  flex-shrink: 0;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: rgba(114, 240, 194, 0.12);
+  border: 1px solid rgba(114, 240, 194, 0.26);
+  color: var(--ink-strong);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+@media (min-width: 540px) {
+  .app-shell {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  .app-body {
+    padding: 22px 22px 20px;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

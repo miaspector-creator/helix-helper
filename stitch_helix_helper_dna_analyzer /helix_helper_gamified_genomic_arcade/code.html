@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Helix Arcade - Genomic Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            surface: "#0f0c1b",
+            "surface-container": "#191330",
+            "surface-container-high": "#251d45",
+            "surface-container-lowest": "#0b0814",
+            primary: "#00ffcc",
+            secondary: "#b537f2",
+            tertiary: "#ff6600",
+            on-surface: "#f3f0ff",
+            on-surface-variant: "#b8b2d1",
+            error: "#ff3366",
+            "error-container": "#591022",
+            "on-error-container": "#ffb4c8"
+          },
+          fontFamily: {
+            headline: ["Inter", "sans-serif"],
+            body: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body { min-height: max(884px, 100dvh); overscroll-behavior: none; }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen">
+<header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-md border-b border-secondary/20 pt-safe">
+<div class="h-16 px-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-secondary via-primary to-tertiary p-0.5 flex items-center justify-center shadow-[0_0_15px_rgba(181,55,242,0.5)]">
+<div class="w-full h-full bg-surface rounded-[10px] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">sports_esports</span>
+</div>
+</div>
+<div>
+<span class="font-headline font-extrabold text-lg tracking-wider bg-gradient-to-r from-primary via-on-surface to-secondary bg-clip-text text-transparent">HELIX ARCADE</span>
+<div class="flex items-center gap-1.5">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="text-[10px] uppercase tracking-widest text-primary font-bold">DNA Master Lv. 5</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-full border border-secondary/30 shadow-[0_0_10px_rgba(181,55,242,0.2)]">
+<span class="material-symbols-outlined text-tertiary text-[16px]">bolt</span>
+<span class="text-xs font-bold text-on-surface">XP: 2,450</span>
+</div>
+</div>
+</header>
+<main class="flex flex-col relative w-full pt-20 bg-surface min-h-screen pb-12">
+<div class="flex flex-col w-full relative px-4 py-3 gap-5">
+<!-- Status Banner / Notification -->
+<div class="w-full" id="statusBanner">
+<div class="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-secondary/20 via-surface-container to-primary/20 border border-secondary/40 shadow-[0_0_20px_rgba(181,55,242,0.15)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-secondary/30 flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-sm text-on-surface">LAB DECK READY</h2>
+<p class="text-xs text-on-surface-variant font-body">Select preset or inject sequence to play.</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full text-[10px] uppercase font-bold bg-primary text-surface shadow-[0_0_10px_rgba(0,255,204,0.5)]">ONLINE</span>
+</div>
+</div>
+<!-- Sequence Input & Controls -->
+<div class="flex flex-col bg-surface-container rounded-2xl border border-secondary/30 p-4 gap-3 shadow-[0_4px_25px_rgba(0,0,0,0.5)]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">terminal</span>
+<label class="font-headline text-xs font-bold uppercase tracking-wider text-on-surface" for="dnaInput">Target Strand (5' → 3')</label>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary border border-primary/30" id="charCountBadge">42 bp</span>
+<button class="w-7 h-7 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-error transition-colors border border-on-surface-variant/10" id="clearInputBtn" title="Clear Sequence">
+<span class="material-symbols-outlined text-[16px]">backspace</span>
+</button>
+</div>
+</div>
+<div class="relative rounded-xl bg-surface-container-lowest border border-secondary/20 focus-within:border-primary focus-within:shadow-[0_0_15px_rgba(0,255,204,0.3)] transition-all">
+<textarea class="w-full bg-transparent px-3 py-3 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none resize-none uppercase tracking-widest leading-relaxed" id="dnaInput" placeholder="PASTE DNA SEQUENCE..." rows="3" spellcheck="false">ATGCGATCGATCGATCGCGATATCGATCGA-TGCNNNATTCG</textarea>
+</div>
+<!-- Quick Presets -->
+<div class="flex flex-col gap-1.5 pt-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Quick Presets</span>
+<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-high border border-secondary/30 hover:border-secondary text-secondary text-xs font-bold transition-all shadow-sm" id="presetDemoBtn">
+<span class="material-symbols-outlined text-[14px]">bug_report</span>
+<span>With Errors</span>
+</button>
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-high border border-primary/30 hover:border-primary text-primary text-xs font-bold transition-all shadow-sm" id="presetCleanBtn">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Clean DNA</span>
+</button>
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-high border border-tertiary/30 hover:border-tertiary text-tertiary text-xs font-bold transition-all shadow-sm" id="presetPlasmidBtn">
+<span class="material-symbols-outlined text-[14px]">adjust</span>
+<span>Plasmid</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Analyze CTA Button -->
+<button class="w-full h-14 py-4 px-6 rounded-2xl bg-gradient-to-r from-secondary via-primary to-tertiary text-surface font-headline font-extrabold text-sm tracking-wider shadow-[0_0_25px_rgba(0,255,204,0.4)] active:scale-[0.98] transition-transform flex items-center justify-center gap-3 cursor-pointer border border-white/20" id="analyzeTriggerBtn">
+<span class="material-symbols-outlined text-[22px]">bolt</span>
+<span class="uppercase">Initialize Sequence Analysis</span>
+<span class="material-symbols-outlined text-[20px]">sports_esports</span>
+</button>
+<!-- Results Deck -->
+<div class="flex flex-col gap-4" id="resultsDeck">
+<!-- Metrics Row: Length & GC Content -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Length Card -->
+<div class="flex flex-col justify-between bg-surface-container rounded-2xl p-4 border border-secondary/20 shadow-md">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Length</span>
+<span class="material-symbols-outlined text-[18px] text-primary">straighten</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-1">
+<span class="font-headline font-extrabold text-2xl text-on-surface" id="metricLengthValue">42</span>
+<span class="text-xs text-on-surface-variant">bp</span>
+</div>
+<span class="text-[11px] text-on-surface-variant" id="canonicalBasesLabel">38 canonical nt</span>
+</div>
+<div class="grid grid-cols-2 gap-1 pt-1">
+<div class="flex items-center justify-between px-2 py-1 rounded-lg bg-surface-container-lowest border border-white/5">
+<span class="text-xs text-primary font-bold">A</span>
+<span class="text-xs text-on-surface" id="countA">9</span>
+</div>
+<div class="flex items-center justify-between px-2 py-1 rounded-lg bg-surface-container-lowest border border-white/5">
+<span class="text-xs text-secondary font-bold">T</span>
+<span class="text-xs text-on-surface" id="countT">10</span>
+</div>
+<div class="flex items-center justify-between px-2 py-1 rounded-lg bg-surface-container-lowest border border-white/5">
+<span class="text-xs text-tertiary font-bold">G</span>
+<span class="text-xs text-on-surface" id="countG">10</span>
+</div>
+<div class="flex items-center justify-between px-2 py-1 rounded-lg bg-surface-container-lowest border border-white/5">
+<span class="text-xs text-primary font-bold">C</span>
+<span class="text-xs text-on-surface" id="countC">9</span>
+</div>
+</div>
+</div>
+<!-- GC Content Card -->
+<div class="flex flex-col justify-between bg-surface-container rounded-2xl p-4 border border-secondary/20 shadow-md">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">GC Content</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">thermostat</span>
+</div>
+<div class="flex flex-col items-center my-3">
+<span class="font-headline font-extrabold text-2xl text-on-surface" id="metricGcPercent">50.0%</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">Stoichiometry</span>
+</div>
+<!-- Energetic Progress Bar -->
+<div class="w-full bg-surface-container-lowest rounded-full h-2.5 p-0.5 border border-white/5 mb-1">
+<div class="bg-gradient-to-r from-primary via-tertiary to-secondary h-full rounded-full transition-all duration-500" id="gcProgressBar" style="width: 50%;"></div>
+</div>
+<div class="flex flex-col items-center pt-1 bg-surface-container-lowest rounded-xl py-1.5 px-2 border border-white/5">
+<span class="text-[10px] text-on-surface-variant uppercase">Est. Tm</span>
+<span class="text-xs text-tertiary font-bold" id="metricTmVal">~ 67.7°C</span>
+</div>
+</div>
+</div>
+<!-- Reverse Complement Card -->
+<div class="flex flex-col bg-surface-container rounded-2xl p-4 gap-3 border border-secondary/20 shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">sync_alt</span>
+<span class="font-headline text-xs font-bold uppercase tracking-wider text-on-surface">Reverse Complement</span>
+</div>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-surface-container-high hover:bg-surface-container-lowest border border-secondary/30 text-on-surface text-xs font-bold transition-all" id="copyRevCompBtn">
+<span class="material-symbols-outlined text-[14px]" id="copyIcon">content_copy</span>
+<span id="copyLabel">Copy</span>
+</button>
+</div>
+<div class="p-3 rounded-xl bg-surface-container-lowest overflow-x-auto whitespace-nowrap text-xs tracking-widest border border-white/5" data-raw="" id="revCompDisplay">
+<span class="text-on-surface-variant italic">Waiting for analysis...</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant px-1">
+<span>Direction: 5' → 3' antiparallel</span>
+<span class="font-bold text-primary">Watson-Crick</span>
+</div>
+</div>
+<!-- Quality & Sequence Integrity Panel -->
+<div class="flex flex-col bg-surface-container rounded-2xl p-4 gap-3 border border-secondary/20 shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">rule</span>
+<span class="font-headline text-xs font-bold uppercase tracking-wider text-on-surface">Integrity Deck</span>
+</div>
+<span class="text-xs font-bold text-secondary bg-surface-container-high px-2.5 py-0.5 rounded-full border border-secondary/30" id="integrityRatio">2 Anomalies</span>
+</div>
+<div class="flex flex-col gap-2" id="issuesContainer">
+<!-- Populated via JS -->
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+    (function initDNAAnalyzer() {
+      const input = document.getElementById('dnaInput');
+      const analyzeBtn = document.getElementById('analyzeTriggerBtn');
+      const clearBtn = document.getElementById('clearInputBtn');
+      const charCountBadge = document.getElementById('charCountBadge');
+      
+      const presetDemo = document.getElementById('presetDemoBtn');
+      const presetClean = document.getElementById('presetCleanBtn');
+      const presetPlasmid = document.getElementById('presetPlasmidBtn');
+
+      const statusBanner = document.getElementById('statusBanner');
+      const resultsDeck = document.getElementById('resultsDeck');
+
+      const metricLengthValue = document.getElementById('metricLengthValue');
+      const canonicalBasesLabel = document.getElementById('canonicalBasesLabel');
+      const countA = document.getElementById('countA');
+      const countT = document.getElementById('countT');
+      const countG = document.getElementById('countG');
+      const countC = document.getElementById('countC');
+
+      const metricGcPercent = document.getElementById('metricGcPercent');
+      const metricTmVal = document.getElementById('metricTmVal');
+      const gcProgressBar = document.getElementById('gcProgressBar');
+      const revCompDisplay = document.getElementById('revCompDisplay');
+      const issuesContainer = document.getElementById('issuesContainer');
+      const integrityRatio = document.getElementById('integrityRatio');
+
+      const copyRevCompBtn = document.getElementById('copyRevCompBtn');
+      const copyIcon = document.getElementById('copyIcon');
+      const copyLabel = document.getElementById('copyLabel');
+
+      const SAMPLES = {
+        demo: "ATGCGATCGATCGATCGCGATATCGATCGA-TGCNNNATTCG",
+        clean: "ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG",
+        plasmid: "GCTAGCGTTTAAACTTAAGCTTGGTACCGAGCTCGGATCCACTAGTCCAGTGTGGTGGAATTGCCCTT"
+      };
+
+      function updateCharCount() {
+        const val = input.value.trim();
+        charCountBadge.innerText = val.length + " bp";
+      }
+
+      function getReverseComplement(seq) {
+        const map = {
+          'A': 'T', 'T': 'A', 'U': 'A', 'G': 'C', 'C': 'G',
+          'N': 'N', '-': '-', 'R': 'Y', 'Y': 'R', 'S': 'S',
+          'W': 'W', 'K': 'M', 'M': 'K', 'B': 'V', 'V': 'B',
+          'D': 'H', 'H': 'D'
+        };
+        let revComp = "";
+        for (let i = seq.length - 1; i >= 0; i--) {
+          const char = seq[i].toUpperCase();
+          revComp += map[char] || '?';
+        }
+        return revComp;
+      }
+
+      function renderStyledSequence(seq) {
+        if (!seq) return "<span class='text-on-surface-variant italic'>None</span>";
+        return seq.split('').map(ch => {
+          const c = ch.toUpperCase();
+          if (c === 'A') return `<span class="text-primary font-bold">${c}</span>`;
+          if (c === 'T' || c === 'U') return `<span class="text-secondary font-bold">${c}</span>`;
+          if (c === 'G') return `<span class="text-tertiary font-bold">${c}</span>`;
+          if (c === 'C') return `<span class="text-primary font-bold">${c}</span>`;
+          if (c === '-') return `<span class="text-error font-extrabold">${c}</span>`;
+          if (c === 'N') return `<span class="text-on-surface-variant font-extrabold">${c}</span>`;
+          return `<span class="text-error">${c}</span>`;
+        }).join('');
+      }
+
+      function analyzeSequence() {
+        const raw = input.value.trim().toUpperCase();
+        
+        if (!raw || raw.length === 0) {
+          statusBanner.innerHTML = `
+            <div class="flex items-center justify-between p-4 rounded-2xl bg-error-container/40 border border-error/50 shadow-md">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[22px] text-error">error</span>
+                <div>
+                  <span class="font-headline font-bold text-sm text-on-surface">SEQUENCE EMPTY</span>
+                  <p class="text-xs text-on-surface-variant">Provide DNA string to start calculation.</p>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-[10px] uppercase font-bold bg-error text-surface">HALTED</span>
+            </div>
+          `;
+          resultsDeck.classList.add('opacity-40', 'pointer-events-none');
+          return;
+        }
+
+        resultsDeck.classList.remove('opacity-40', 'pointer-events-none');
+
+        let a = 0, t = 0, g = 0, c = 0, n = 0, gaps = 0;
+        let gapPositions = [];
+        let nPositions = [];
+        let invalidPositions = [];
+
+        for (let i = 0; i < raw.length; i++) {
+          const char = raw[i];
+          const pos = i + 1;
+          if (char === 'A') a++;
+          else if (char === 'T' || char === 'U') t++;
+          else if (char === 'G') g++;
+          else if (char === 'C') c++;
+          else if (char === 'N') { n++; nPositions.push(pos); }
+          else if (char === '-') { gaps++; gapPositions.push(pos); }
+          else if (!/[ATGCN\-]/.test(char)) { invalidPositions.push({ char, pos }); }
+        }
+
+        const canonicalCount = a + t + g + c;
+        const totalLen = raw.length;
+        const gcTotal = g + c;
+        const gcRatio = canonicalCount > 0 ? (gcTotal / canonicalCount) * 100 : 0;
+
+        let tm = 0;
+        if (canonicalCount < 14) {
+          tm = (a + t) * 2 + (g + c) * 4;
+        } else {
+          tm = 64.9 + 41 * ((g + c) - 16.4) / canonicalCount;
+        }
+
+        metricLengthValue.innerText = totalLen;
+        canonicalBasesLabel.innerText = `${canonicalCount} canonical nt`;
+        countA.innerText = a;
+        countT.innerText = t;
+        countG.innerText = g;
+        countC.innerText = c;
+
+        metricGcPercent.innerText = gcRatio.toFixed(1) + "%";
+        metricTmVal.innerText = canonicalCount > 0 ? `~ ${tm.toFixed(1)}°C` : 'N/A';
+        gcProgressBar.style.width = Math.min(Math.max(gcRatio, 0), 100) + "%";
+
+        const rc = getReverseComplement(raw);
+        revCompDisplay.innerHTML = renderStyledSequence(rc);
+        revCompDisplay.dataset.raw = rc;
+
+        let totalIssues = 0;
+        if (gapPositions.length > 0) totalIssues++;
+        if (nPositions.length > 0) totalIssues++;
+        if (invalidPositions.length > 0) totalIssues += invalidPositions.length;
+
+        if (totalIssues === 0) {
+          statusBanner.innerHTML = `
+            <div class="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-primary/15 via-surface-container to-secondary/15 border border-primary/40 shadow-md">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary border border-primary/30">
+                  <span class="material-symbols-outlined text-[22px]">military_tech</span>
+                </div>
+                <div>
+                  <h2 class="font-headline font-bold text-sm text-on-surface">ACHIEVEMENT UNLOCKED: PERFECT DECK</h2>
+                  <p class="text-xs text-on-surface-variant font-body">All ${totalLen} base pairs verified with zero anomalies!</p>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-[10px] uppercase font-bold bg-primary text-surface shadow-[0_0_10px_rgba(0,255,204,0.5)]">100%</span>
+            </div>
+          `;
+          integrityRatio.innerText = "100% Integrity";
+          integrityRatio.className = "text-xs font-bold text-primary bg-surface-container-high px-2.5 py-0.5 rounded-full border border-primary/30";
+        } else {
+          statusBanner.innerHTML = `
+            <div class="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-tertiary/15 via-surface-container to-secondary/15 border border-tertiary/40 shadow-md">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-tertiary/20 flex items-center justify-center text-tertiary border border-tertiary/30">
+                  <span class="material-symbols-outlined text-[22px]">warning</span>
+                </div>
+                <div>
+                  <h2 class="font-headline font-bold text-sm text-on-surface">${totalIssues} ANOMALY DETECTED</h2>
+                  <p class="text-xs text-on-surface-variant font-body">${gaps} gaps, ${n} ambiguous bases flagged.</p>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-[10px] uppercase font-bold bg-tertiary text-surface shadow-[0_0_10px_rgba(255,102,0,0.5)]">REVIEW</span>
+            </div>
+          `;
+          integrityRatio.innerText = `${totalIssues} Anomalies`;
+          integrityRatio.className = "text-xs font-bold text-tertiary bg-surface-container-high px-2.5 py-0.5 rounded-full border border-tertiary/30";
+        }
+
+        let issuesHtml = '';
+        if (gapPositions.length > 0) {
+          issuesHtml += `
+            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-surface-container-lowest border border-error/20">
+              <div class="w-6 h-6 rounded-lg flex items-center justify-center bg-error/20 text-error flex-shrink-0 text-xs font-bold">-</div>
+              <div class="flex flex-col flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="font-headline text-xs font-bold text-on-surface">Gap Delimiter</span>
+                  <span class="text-[10px] text-error bg-surface-container-high px-2 py-0.5 rounded border border-error/20">pos: ${gapPositions.join(', ')}</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Alignment gaps found. Risk of indel frameshift.</span>
+              </div>
+            </div>
+          `;
+        }
+
+        if (nPositions.length > 0) {
+          issuesHtml += `
+            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-surface-container-lowest border border-secondary/20">
+              <div class="w-6 h-6 rounded-lg flex items-center justify-center bg-secondary/20 text-secondary flex-shrink-0 text-xs font-bold">N</div>
+              <div class="flex flex-col flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="font-headline text-xs font-bold text-on-surface">Ambiguous Bases</span>
+                  <span class="text-[10px] text-secondary bg-surface-container-high px-2 py-0.5 rounded border border-secondary/20">pos: ${nPositions.slice(0, 4).join(', ')}</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">${nPositions.length} position(s) unresolved. Low confidence call.</span>
+              </div>
+            </div>
+          `;
+        }
+
+        if (invalidPositions.length > 0) {
+          issuesHtml += `
+            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-surface-container-lowest border border-error/20">
+              <div class="w-6 h-6 rounded-lg flex items-center justify-center bg-error/20 text-error flex-shrink-0 text-xs font-bold">?</div>
+              <div class="flex flex-col flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="font-headline text-xs font-bold text-on-surface">Invalid Non-IUPAC</span>
+                  <span class="text-[10px] text-error bg-surface-container-high px-2 py-0.5 rounded border border-error/20">${invalidPositions.length} items</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Unrecognized symbols in sequence data.</span>
+              </div>
+            </div>
+          `;
+        }
+
+        if (totalIssues === 0) {
+          issuesHtml += `
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-primary/20">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+                <span class="font-headline text-xs font-bold text-on-surface">Base Validation Passed</span>
+              </div>
+              <span class="text-[10px] text-primary bg-surface-container-high px-2.5 py-0.5 rounded border border-primary/20 font-bold">100% OK</span>
+            </div>
+          `;
+        }
+
+        issuesContainer.innerHTML = issuesHtml;
+      }
+
+      input.addEventListener('input', updateCharCount);
+      analyzeBtn.addEventListener('click', analyzeSequence);
+      clearBtn.addEventListener('click', () => { input.value = ''; updateCharCount(); analyzeSequence(); });
+
+      presetDemo.addEventListener('click', () => { input.value = SAMPLES.demo; updateCharCount(); analyzeSequence(); });
+      presetClean.addEventListener('click', () => { input.value = SAMPLES.clean; updateCharCount(); analyzeSequence(); });
+      presetPlasmid.addEventListener('click', () => { input.value = SAMPLES.plasmid; updateCharCount(); analyzeSequence(); });
+
+      copyRevCompBtn.addEventListener('click', () => {
+        const text = revCompDisplay.dataset.raw || '';
+        if (text) {
+          navigator.clipboard.writeText(text).then(() => {
+            copyLabel.innerText = "Copied!";
+            copyIcon.innerText = "done";
+            setTimeout(() => {
+              copyLabel.innerText = "Copy";
+              copyIcon.innerText = "content_copy";
+            }, 1800);
+          });
+        }
+      });
+
+      updateCharCount();
+      analyzeSequence();
+    })();
+  </script>
+</body></html>

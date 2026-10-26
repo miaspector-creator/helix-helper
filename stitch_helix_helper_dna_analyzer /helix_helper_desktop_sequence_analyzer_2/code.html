@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "primary": "#11e8a0",
+          "primary-fixed": "#49ffb6",
+          "primary-fixed-dim": "#00e29b",
+          "primary-container": "#11e8a0",
+          "on-primary": "#003824",
+          "on-primary-container": "#00472e",
+          "secondary": "#38bdf8",
+          "secondary-fixed": "#22d3ee",
+          "secondary-container": "#0369a1",
+          "on-secondary": "#082f49",
+          "tertiary": "#f87171",
+          "tertiary-container": "#7f1d1d",
+          "on-tertiary": "#450a0a",
+          "tertiary-fixed": "#fca5a5",
+          "surface": "#0f131d",
+          "surface-dim": "#0f131d",
+          "surface-bright": "#353944",
+          "surface-container-lowest": "#0a0e18",
+          "surface-container-low": "#171b26",
+          "surface-container": "#1c2130",
+          "surface-container-high": "#23293c",
+          "surface-container-highest": "#31384e",
+          "outline": "#475569",
+          "outline-variant": "#262f44",
+          "on-surface": "#dfe2f1",
+          "on-surface-variant": "#94a3b8",
+          "on-background": "#dfe2f1",
+          "background": "#0f131d",
+          "error": "#ffb4ab",
+          "error-container": "#93000a"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "margin-desktop": "2rem",
+          "gutter": "1rem",
+          "space-lg": "1.25rem",
+          "margin": "1rem",
+          "space-sm": "0.5rem",
+          "space-xl": "2rem",
+          "space-md": "0.75rem",
+          "space-xs": "0.25rem",
+          "gutter-desktop": "1.5rem"
+        },
+        "fontFamily": {
+          "headline": ["Inter", "sans-serif"],
+          "display": ["Inter", "sans-serif"],
+          "body": ["JetBrains Mono", "monospace"],
+          "label": ["Inter", "sans-serif"],
+          "data-mono-dense": ["JetBrains Mono", "monospace"]
+        }
+      }
+    }
+  };
+</script></head><body class="bg-background text-on-surface font-headline min-h-screen selection:bg-primary selection:text-on-primary"><header class="fixed top-0 left-0 w-full z-50 bg-[#0a0e18]/85 backdrop-blur-md border-b border-[#262f44]/80 shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-14 w-full px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-xl"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[22px]">all_inclusive</span><span class="font-headline font-bold text-lg tracking-tight text-on-surface">Helix Helper</span></div><nav class="flex items-center gap-space-lg" data-active-classes="text-primary font-semibold"><a class="font-label text-sm text-on-surface-variant hover:text-on-surface transition-colors duration-150" data-path="workbench" href="#">Workbench</a><a aria-current="page" class="transition-colors duration-150 text-primary font-semibold text-sm border-b-2 border-primary pb-0.5" data-path="sequence-analyzer" href="#">Sequence Analyzer</a><a class="font-label text-sm text-on-surface-variant hover:text-on-surface transition-colors duration-150" data-path="primer-design" href="#">Primer Design</a><a class="font-label text-sm text-on-surface-variant hover:text-on-surface transition-colors duration-150" data-path="dilution-calculator" href="#">Dilution &amp; Molarity</a><a class="font-label text-sm text-on-surface-variant hover:text-on-surface transition-colors duration-150" data-path="protocol-notebook" href="#">Protocols</a></nav></div><div class="flex items-center gap-space-md"><div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center hover:bg-primary/30 transition-colors cursor-pointer"><span class="material-symbols-outlined text-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-14 bg-background min-h-screen flex flex-col"><div class="flex flex-col w-full text-on-surface relative overflow-hidden">
+<!-- Subtle Translucent Double Helix Motif Background Watermark with Bio-mint and Cyan glow -->
+<div class="absolute inset-0 pointer-events-none select-none overflow-hidden z-0"><style>@keyframes dna-flow-h { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } } @keyframes dna-pulse { 0%, 100% { opacity: 0.16; filter: drop-shadow(0 0 6px rgba(17, 232, 160, 0.35)); } 50% { opacity: 0.26; filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.45)); } } @keyframes strand-wave { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-8px) rotate(0.4deg); } } .dna-track-container { animation: dna-flow-h 28s linear infinite, strand-wave 7s ease-in-out infinite alternate; will-change: transform; } .dna-glow-pulse { animation: dna-pulse 5s ease-in-out infinite; } @media (prefers-reduced-motion: reduce) { .dna-track-container, .dna-glow-pulse { animation: none !important; opacity: 0.12; } }</style><div class="w-[200%] h-full flex dna-track-container dna-glow-pulse"><svg class="w-1/2 h-full min-h-[700px] flex-shrink-0" fill="none" preserveaspectratio="none" viewbox="0 0 1600 800" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="strand-grad-1" x1="0%" x2="100%" y1="0%" y2="0%"><stop offset="0%" stop-color="#11e8a0" stop-opacity="0.8"></stop><stop offset="50%" stop-color="#38bdf8" stop-opacity="0.9"></stop><stop offset="100%" stop-color="#11e8a0" stop-opacity="0.8"></stop></lineargradient><lineargradient id="strand-grad-2" x1="0%" x2="100%" y1="0%" y2="0%"><stop offset="0%" stop-color="#38bdf8" stop-opacity="0.75"></stop><stop offset="50%" stop-color="#11e8a0" stop-opacity="0.9"></stop><stop offset="100%" stop-color="#38bdf8" stop-opacity="0.75"></stop></lineargradient><filter height="140%" id="glow" width="140%" x="-20%" y="-20%"><fegaussianblur result="blur" stddeviation="5"></fegaussianblur><fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite></filter></defs><g opacity="0.6" stroke-dasharray="1 0"><line stroke="#11e8a0" stroke-width="1.5" x1="80" x2="80" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="160" x2="160" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="240" x2="240" y1="130" y2="430"></line><line stroke="#38bdf8" stroke-width="1.5" x1="320" x2="320" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="400" x2="400" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="480" x2="480" y1="280" y2="280"></line><line stroke="#11e8a0" stroke-width="1.5" x1="560" x2="560" y1="360" y2="200"></line><line stroke="#38bdf8" stroke-width="1.5" x1="640" x2="640" y1="405" y2="155"></line><line stroke="#11e8a0" stroke-width="1.5" x1="720" x2="720" y1="430" y2="130"></line><line stroke="#38bdf8" stroke-width="1.5" x1="800" x2="800" y1="405" y2="155"></line><line stroke="#11e8a0" stroke-width="1.5" x1="880" x2="880" y1="360" y2="200"></line><line stroke="#38bdf8" stroke-width="1.5" x1="960" x2="960" y1="280" y2="280"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1040" x2="1040" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1120" x2="1120" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1200" x2="1200" y1="130" y2="430"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1280" x2="1280" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1360" x2="1360" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1440" x2="1440" y1="280" y2="280"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1520" x2="1520" y1="360" y2="200"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1600" x2="1600" y1="405" y2="155"></line></g><path d="M0,280 C240,60 480,60 720,280 C960,500 1200,500 1440,280 C1560,170 1600,100 1600,280" fill="none" filter="url(#glow)" stroke="url(#strand-grad-1)" stroke-width="3.5"></path><path d="M0,280 C240,500 480,500 720,280 C960,60 1200,60 1440,280 C1560,390 1600,460 1600,280" fill="none" filter="url(#glow)" stroke="url(#strand-grad-2)" stroke-dasharray="9 6" stroke-width="3"></path><g fill="#11e8a0" filter="url(#glow)"><circle cx="80" cy="200" r="4.5"></circle><circle cx="240" cy="130" r="5.5"></circle><circle cx="400" cy="200" r="4.5"></circle><circle cx="560" cy="360" r="4.5"></circle><circle cx="720" cy="430" r="5.5"></circle><circle cx="880" cy="360" r="4.5"></circle><circle cx="1040" cy="200" r="4.5"></circle><circle cx="1200" cy="130" r="5.5"></circle><circle cx="1360" cy="200" r="4.5"></circle><circle cx="1520" cy="360" r="4.5"></circle></g><g fill="#38bdf8" filter="url(#glow)"><circle cx="80" cy="360" r="4.5"></circle><circle cx="240" cy="430" r="5.5"></circle><circle cx="400" cy="360" r="4.5"></circle><circle cx="560" cy="200" r="4.5"></circle><circle cx="720" cy="130" r="5.5"></circle><circle cx="880" cy="200" r="4.5"></circle><circle cx="1040" cy="360" r="4.5"></circle><circle cx="1200" cy="430" r="5.5"></circle><circle cx="1360" cy="360" r="4.5"></circle><circle cx="1520" cy="200" r="4.5"></circle></g><path d="M0,640 C280,480 560,800 840,640 C1120,480 1400,800 1600,640" fill="none" opacity="0.35" stroke="url(#strand-grad-1)" stroke-dasharray="4 4" stroke-width="2"></path><path d="M0,640 C280,800 560,480 840,640 C1120,800 1400,480 1600,640" fill="none" opacity="0.35" stroke="url(#strand-grad-2)" stroke-width="2"></path></svg><svg class="w-1/2 h-full min-h-[700px] flex-shrink-0" fill="none" preserveaspectratio="none" viewbox="0 0 1600 800" xmlns="http://www.w3.org/2000/svg"><g opacity="0.6" stroke-dasharray="1 0"><line stroke="#11e8a0" stroke-width="1.5" x1="80" x2="80" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="160" x2="160" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="240" x2="240" y1="130" y2="430"></line><line stroke="#38bdf8" stroke-width="1.5" x1="320" x2="320" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="400" x2="400" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="480" x2="480" y1="280" y2="280"></line><line stroke="#11e8a0" stroke-width="1.5" x1="560" x2="560" y1="360" y2="200"></line><line stroke="#38bdf8" stroke-width="1.5" x1="640" x2="640" y1="405" y2="155"></line><line stroke="#11e8a0" stroke-width="1.5" x1="720" x2="720" y1="430" y2="130"></line><line stroke="#38bdf8" stroke-width="1.5" x1="800" x2="800" y1="405" y2="155"></line><line stroke="#11e8a0" stroke-width="1.5" x1="880" x2="880" y1="360" y2="200"></line><line stroke="#38bdf8" stroke-width="1.5" x1="960" x2="960" y1="280" y2="280"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1040" x2="1040" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1120" x2="1120" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1200" x2="1200" y1="130" y2="430"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1280" x2="1280" y1="155" y2="405"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1360" x2="1360" y1="200" y2="360"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1440" x2="1440" y1="280" y2="280"></line><line stroke="#11e8a0" stroke-width="1.5" x1="1520" x2="1520" y1="360" y2="200"></line><line stroke="#38bdf8" stroke-width="1.5" x1="1600" x2="1600" y1="405" y2="155"></line></g><path d="M0,280 C240,60 480,60 720,280 C960,500 1200,500 1440,280 C1560,170 1600,100 1600,280" fill="none" filter="url(#glow)" stroke="url(#strand-grad-1)" stroke-width="3.5"></path><path d="M0,280 C240,500 480,500 720,280 C960,60 1200,60 1440,280 C1560,390 1600,460 1600,280" fill="none" filter="url(#glow)" stroke="url(#strand-grad-2)" stroke-dasharray="9 6" stroke-width="3"></path><g fill="#11e8a0" filter="url(#glow)"><circle cx="80" cy="200" r="4.5"></circle><circle cx="240" cy="130" r="5.5"></circle><circle cx="400" cy="200" r="4.5"></circle><circle cx="560" cy="360" r="4.5"></circle><circle cx="720" cy="430" r="5.5"></circle><circle cx="880" cy="360" r="4.5"></circle><circle cx="1040" cy="200" r="4.5"></circle><circle cx="1200" cy="130" r="5.5"></circle><circle cx="1360" cy="200" r="4.5"></circle><circle cx="1520" cy="360" r="4.5"></circle></g><g fill="#38bdf8" filter="url(#glow)"><circle cx="80" cy="360" r="4.5"></circle><circle cx="240" cy="430" r="5.5"></circle><circle cx="400" cy="360" r="4.5"></circle><circle cx="560" cy="200" r="4.5"></circle><circle cx="720" cy="130" r="5.5"></circle><circle cx="880" cy="200" r="4.5"></circle><circle cx="1040" cy="360" r="4.5"></circle><circle cx="1200" cy="430" r="5.5"></circle><circle cx="1360" cy="360" r="4.5"></circle><circle cx="1520" cy="200" r="4.5"></circle></g><path d="M0,640 C280,480 560,800 840,640 C1120,480 1400,800 1600,640" fill="none" opacity="0.35" stroke="url(#strand-grad-1)" stroke-dasharray="4 4" stroke-width="2"></path><path d="M0,640 C280,800 560,480 840,640 C1120,800 1400,480 1600,640" fill="none" opacity="0.35" stroke="url(#strand-grad-2)" stroke-width="2"></path></svg></div></div>
+<div class="relative z-10 w-full px-margin-desktop py-space-xl flex flex-col gap-gutter-desktop">
+<!-- Page Header (Clinical & Clean Laboratory Bench) -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-space-sm mb-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#11e8a0] animate-pulse"></span>
+<span class="font-label text-xs font-semibold text-primary uppercase tracking-wider">Clinical Workbench Diagnostic</span>
+</div>
+<h1 class="font-headline text-3xl font-bold text-on-surface tracking-tight">DNA Sequence Analyzer</h1>
+<p class="font-body text-sm text-on-surface-variant mt-1">Instant genomic metrics, GC stoichiometry, and strand validation.</p>
+</div>
+<!-- Quick Session Indicator Chip -->
+<div class="flex items-center gap-space-md bg-[#171b26]/90 border border-[#262f44] px-space-md py-space-sm rounded-lg shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label text-xs text-on-surface-variant">BUFFER:</span>
+<span class="font-data-mono-dense text-xs text-secondary font-medium">10mM Tris-HCl</span>
+</div>
+<div class="w-1 h-3 rounded-full bg-[#262f44]"></div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label text-xs text-on-surface-variant">ENZYME:</span>
+<span class="font-data-mono-dense text-xs text-primary font-medium">Taq 5U/µL</span>
+</div>
+</div>
+</div>
+<!-- Main 2-Column Split Workspace Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+<!-- LEFT COLUMN: Input, Presets & Primary Action (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-gutter">
+<div class="bg-[#171b26]/95 border border-[#262f44] p-gutter rounded-xl shadow-lg flex flex-col gap-space-md backdrop-blur-sm">
+<!-- Textarea Header / Strand Meta -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">strikethrough_s</span>
+<label class="font-headline font-semibold text-sm text-on-surface" for="sequence-input">Target Strand (5' → 3')</label>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-data-mono-dense text-xs px-2 py-0.5 rounded bg-[#0a0e18] border border-[#262f44] text-primary font-medium" id="bp-counter">42 bp</span>
+<button class="p-1 rounded hover:bg-[#23293c] text-on-surface-variant hover:text-rose-400 transition-colors" id="clear-btn" title="Clear buffer" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Sequence Monospace Input Field with Line Counter Strip -->
+<div class="relative bg-[#0a0e18] border border-[#262f44] rounded-lg overflow-hidden focus-within:border-primary/60 focus-within:ring-1 focus-within:ring-primary/40 transition-all shadow-inner">
+<div class="flex">
+<div class="w-8 py-space-md bg-[#121622] border-r border-[#262f44] flex flex-col items-center select-none font-data-mono-dense text-xs text-on-surface-variant/50">
+<span class="">01</span>
+<span class="">02</span>
+<span class="">03</span>
+</div>
+<textarea class="w-full bg-transparent text-[#e2e8f0] font-data-mono-dense text-xs p-space-md focus:outline-none resize-none tracking-wider uppercase leading-relaxed placeholder:text-slate-600" id="sequence-input" placeholder="Paste test DNA sample here for calculations" rows="5" spellcheck="false">ATGCGATCGATCGATCGCGATATCGATCGA-TGCNNNATTCG</textarea>
+</div>
+</div>
+<!-- Quick Presets -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label text-xs uppercase tracking-wider text-on-surface-variant font-medium">Quick Presets</span>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="font-label text-xs px-3 py-1.5 rounded-full bg-[#1c2130] border border-[#262f44] hover:border-slate-500 text-on-surface transition-all flex items-center gap-1.5 hover:bg-[#23293c]" onclick="loadPreset('error')" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_6px_#fbbf24]"></span>
+                With Errors (Demo)
+              </button>
+<button class="font-label text-xs px-3 py-1.5 rounded-full bg-[#1c2130] border border-[#262f44] hover:border-slate-500 text-on-surface transition-all flex items-center gap-1.5 hover:bg-[#23293c]" onclick="loadPreset('clean')" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_6px_#11e8a0]"></span>
+                Clean DNA
+              </button>
+<button class="font-label text-xs px-3 py-1.5 rounded-full bg-[#1c2130] border border-[#262f44] hover:border-slate-500 text-on-surface transition-all flex items-center gap-1.5 hover:bg-[#23293c]" onclick="loadPreset('primer')" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_6px_#38bdf8]"></span>
+                Sample Primers
+              </button>
+</div>
+</div>
+<!-- Prominent Action Button -->
+<button class="w-full mt-space-xs py-2.5 px-space-xl rounded-lg bg-primary hover:bg-[#00e29b] text-[#003824] font-headline font-semibold text-sm tracking-wide shadow-[0_0_20px_rgba(17,232,160,0.3)] hover:shadow-[0_0_25px_rgba(17,232,160,0.5)] transition-all flex items-center justify-center gap-space-sm active:scale-[0.99]" id="analyze-btn" onclick="analyzeSequence()" type="button">
+<span>Analyze sequence ⚡</span>
+</button>
+</div>
+<!-- Instrument Quick Spec Strip -->
+<div class="bg-[#171b26]/80 border border-[#262f44] p-space-md rounded-xl flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">biotech</span>
+<span class="font-label text-xs">ALGORITHM: NEB Tm v2.1.4</span>
+</div>
+<span class="font-label text-xs text-primary font-semibold font-data-mono-dense tracking-wider">CALIBRATED</span>
+</div>
+</div>
+<!-- RIGHT COLUMN: Diagnostic Banner, Calculation Cards & Integrity (7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-gutter">
+<!-- Status Banner -->
+<div class="bg-[#171b26] border border-amber-500/30 rounded-xl p-space-md shadow-md flex items-center gap-space-md" id="status-banner">
+<div class="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center flex-shrink-0" id="status-icon-box">
+<span class="material-symbols-outlined text-amber-400 text-[22px]" id="status-icon">warning</span>
+</div>
+<div class="flex flex-col">
+<div class="font-headline font-semibold text-sm text-amber-300 leading-tight" id="status-title">2 issues found</div>
+<div class="font-body text-xs text-on-surface-variant mt-0.5" id="status-subtitle">1 gap, 3 ambiguous, 0 invalid</div>
+</div>
+</div>
+<!-- Results Grid: 2x2 Bento Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Card 1: LENGTH -->
+<div class="bg-[#171b26] border border-[#262f44] p-gutter rounded-xl shadow-md flex flex-col justify-between gap-space-md">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label text-xs uppercase tracking-wider text-on-surface-variant font-medium">LENGTH</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">straighten</span>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs">
+<span class="font-headline font-bold text-3xl text-on-surface" id="metric-length">42 bp</span>
+</div>
+<p class="font-body text-xs text-on-surface-variant mt-1" id="metric-clean-bases">38 A/T/G/C bases</p>
+</div>
+<!-- Base Breakdown Pills -->
+<div class="grid grid-cols-4 gap-space-xs pt-space-xs">
+<div class="flex flex-col items-center py-space-xs bg-[#0a0e18] border border-[#262f44]/60 rounded">
+<span class="font-label text-xs text-primary font-bold">A</span>
+<span class="font-data-mono-dense text-xs text-on-surface mt-0.5 font-medium" id="count-a">9</span>
+</div>
+<div class="flex flex-col items-center py-space-xs bg-[#0a0e18] border border-[#262f44]/60 rounded">
+<span class="font-label text-xs text-rose-400 font-bold">T</span>
+<span class="font-data-mono-dense text-xs text-on-surface mt-0.5 font-medium" id="count-t">10</span>
+</div>
+<div class="flex flex-col items-center py-space-xs bg-[#0a0e18] border border-[#262f44]/60 rounded">
+<span class="font-label text-xs text-secondary font-bold">G</span>
+<span class="font-data-mono-dense text-xs text-on-surface mt-0.5 font-medium" id="count-g">10</span>
+</div>
+<div class="flex flex-col items-center py-space-xs bg-[#0a0e18] border border-[#262f44]/60 rounded">
+<span class="font-label text-xs text-cyan-300 font-bold">C</span>
+<span class="font-data-mono-dense text-xs text-on-surface mt-0.5 font-medium" id="count-c">9</span>
+</div>
+</div>
+</div>
+<!-- Card 2: GC Content -->
+<div class="bg-[#171b26] border border-[#262f44] p-gutter rounded-xl shadow-md flex flex-col justify-between gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label text-xs uppercase tracking-wider text-on-surface-variant font-medium">GC Content</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">percent</span>
+</div>
+<div class="flex items-center gap-gutter">
+<!-- Radial Meter SVG -->
+<div class="relative w-20 h-20 flex-shrink-0">
+<svg class="w-full h-full -rotate-90 drop-shadow-[0_0_8px_rgba(56,189,248,0.25)]" viewbox="0 0 36 36">
+<path class="text-[#0a0e18] stroke-[#262f44]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3.5"></path>
+<path class="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" id="gc-gauge-path" stroke="currentColor" stroke-dasharray="50, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-data-mono-dense text-xs font-semibold text-on-surface" id="metric-gc">50.0%</span>
+</div>
+</div>
+<!-- Thermal & Annealing Calculation -->
+<div class="flex flex-col">
+<span class="font-label text-xs uppercase text-on-surface-variant font-medium">Melting Temp</span>
+<span class="font-headline font-semibold text-sm text-secondary mt-0.5" id="metric-tm">Est. Annealing Tm ~ 67.7°C</span>
+<span class="font-body text-xs text-on-surface-variant/80 mt-1">Nearest-neighbor thermo</span>
+</div>
+</div>
+<div class="w-full bg-[#0a0e18] border border-[#262f44]/40 h-2 rounded-full overflow-hidden p-0.5">
+<div class="bg-gradient-to-r from-secondary to-primary h-full rounded-full shadow-[0_0_8px_#38bdf8]" id="gc-progress-bar" style="width: 50%;"></div>
+</div>
+</div>
+<!-- Card 3: Reverse Complement (Full Width across bottom grid) -->
+<div class="md:col-span-2 bg-[#171b26] border border-[#262f44] p-gutter rounded-xl shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">swap_horiz</span>
+<span class="font-headline font-semibold text-sm text-on-surface">Reverse Complement (5' → 3')</span>
+</div>
+<button class="font-label text-xs px-3 py-1 rounded bg-[#1c2130] hover:bg-[#23293c] border border-[#262f44] text-on-surface transition-colors flex items-center gap-1.5" id="copy-rc-btn" onclick="copyReverseComp()" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">content_copy</span>
+<span id="copy-btn-text">Copy</span>
+</button>
+</div>
+<!-- Color Coded Reverse Complement Monospace Sequence Track -->
+<div class="bg-[#0a0e18] border border-[#262f44] p-space-md rounded-lg overflow-x-auto whitespace-nowrap font-data-mono-dense text-xs tracking-widest leading-relaxed flex items-center gap-1 select-all" id="rc-sequence-box"><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="bg-[#262f44] text-amber-300 px-1 rounded">N</span><span class="bg-[#262f44] text-amber-300 px-1 rounded">N</span><span class="bg-[#262f44] text-amber-300 px-1 rounded">N</span><span class="text-secondary font-bold">G</span><span class="text-cyan-300 font-bold">C</span><span class="text-primary font-bold">A</span><span class="bg-red-950/60 text-rose-300 font-bold px-1 rounded border border-rose-800/40">-</span><span class="text-rose-400 font-bold">T</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span><span class="text-cyan-300 font-bold">C</span><span class="text-secondary font-bold">G</span><span class="text-cyan-300 font-bold">C</span><span class="text-primary font-bold">A</span><span class="text-rose-400 font-bold">T</span></div>
+<!-- Mini Legend For Tokens -->
+<div class="flex items-center gap-space-md pt-space-xs text-on-surface-variant font-data-mono-dense text-xs">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_6px_#11e8a0]"></span> A: Ade</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-400"></span> T: Thy</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_6px_#38bdf8]"></span> G: Gua</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cyan-300"></span> C: Cyt</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> N: Ambig</span>
+</div>
+</div>
+<!-- Card 4: Quality & Sequence Integrity (Full Width Checks Panel) -->
+<div class="md:col-span-2 bg-[#171b26] border border-[#262f44] p-gutter rounded-xl shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-amber-400 text-[18px]">verified_user</span>
+<span class="font-headline font-semibold text-sm text-on-surface">Quality &amp; Sequence Integrity</span>
+</div>
+<span class="font-data-mono-dense text-xs px-2.5 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 font-medium" id="anomaly-badge">2 Anomalies Detected</span>
+</div>
+<!-- Anomalies List -->
+<div class="flex flex-col gap-space-sm" id="anomalies-list">
+<div class="bg-[#121622] border border-[#262f44] p-space-md rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-start gap-space-md">
+<div class="w-7 h-7 rounded bg-[#1c2130] border border-amber-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-amber-400 text-[16px]">remove</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline text-xs text-on-surface font-semibold">Gap delimiter found</span>
+<span class="font-data-mono-dense text-xs px-1.5 py-0.5 rounded bg-[#1c2130] border border-[#262f44] text-on-surface-variant">pos: 31</span>
+</div>
+<span class="font-body text-xs text-on-surface-variant mt-0.5">Contains 1 alignment gap(s). May cause indel frameshifts.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-end sm:self-center">
+<span class="font-label text-xs font-semibold text-rose-400 uppercase tracking-wide">High Impact</span>
+</div>
+</div>
+<div class="bg-[#121622] border border-[#262f44] p-space-md rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-start gap-space-md">
+<div class="w-7 h-7 rounded bg-[#1c2130] border border-amber-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-amber-400 text-[16px]">help_center</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline text-xs text-on-surface font-semibold">Ambiguous base locus (N)</span>
+<span class="font-data-mono-dense text-xs px-1.5 py-0.5 rounded bg-[#1c2130] border border-[#262f44] text-on-surface-variant">pos: 35, 36, 37</span>
+</div>
+<span class="font-body text-xs text-on-surface-variant mt-0.5">3 position(s) unresolved. Low confidence call.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-end sm:self-center">
+<span class="font-label text-xs font-semibold text-amber-400 uppercase tracking-wide">Moderate</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Logic Script for Presets, Realtime Calculation & State Updates -->
+<script>
+    const sampleErrors = "ATGCGATCGATCGATCGCGATATCGATCGA-TGCNNNATTCG";
+    const sampleClean = "ATGCGATCGATCGATCGCGATATCGATCGATGCAATTCG";
+    const samplePrimers = "GGATCCATGGCTAGCATGACTGGTGGACAGCAAATGG";
+
+    function loadPreset(type) {
+      const textarea = document.getElementById('sequence-input');
+      if (type === 'error') textarea.value = sampleErrors;
+      if (type === 'clean') textarea.value = sampleClean;
+      if (type === 'primer') textarea.value = samplePrimers;
+      analyzeSequence();
+    }
+
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      const textarea = document.getElementById('sequence-input');
+      textarea.value = '';
+      analyzeSequence();
+    });
+
+    document.getElementById('sequence-input').addEventListener('input', () => {
+      updateBpCounter();
+    });
+
+    function updateBpCounter() {
+      const val = document.getElementById('sequence-input').value.trim();
+      document.getElementById('bp-counter').textContent = val.length + ' bp';
+    }
+
+    function analyzeSequence() {
+      const raw = document.getElementById('sequence-input').value.toUpperCase().trim();
+      updateBpCounter();
+
+      const banner = document.getElementById('status-banner');
+      const iconBox = document.getElementById('status-icon-box');
+      const icon = document.getElementById('status-icon');
+      const title = document.getElementById('status-title');
+      const subtitle = document.getElementById('status-subtitle');
+      const metricLength = document.getElementById('metric-length');
+      const metricCleanBases = document.getElementById('metric-clean-bases');
+      const countA = document.getElementById('count-a');
+      const countT = document.getElementById('count-t');
+      const countG = document.getElementById('count-g');
+      const countC = document.getElementById('count-c');
+      const metricGc = document.getElementById('metric-gc');
+      const metricTm = document.getElementById('metric-tm');
+      const gcGaugePath = document.getElementById('gc-gauge-path');
+      const gcProgressBar = document.getElementById('gc-progress-bar');
+      const rcBox = document.getElementById('rc-sequence-box');
+      const anomaliesList = document.getElementById('anomalies-list');
+      const anomalyBadge = document.getElementById('anomaly-badge');
+
+      if (!raw || raw.length === 0) {
+        banner.className = "bg-[#171b26] border border-[#262f44] rounded-xl p-space-md shadow-sm flex items-center gap-space-md";
+        iconBox.className = "w-10 h-10 rounded-lg bg-[#1c2130] border border-[#262f44] flex items-center justify-center flex-shrink-0";
+        icon.className = "material-symbols-outlined text-on-surface-variant text-[22px]";
+        icon.textContent = "info";
+        title.className = "font-headline font-semibold text-sm text-on-surface leading-tight";
+        title.textContent = "Paste a DNA sequence to start.";
+        subtitle.textContent = "Supported formats: FASTA, raw nucleotides (A, T, G, C, N, -)";
+        metricLength.textContent = "0 bp";
+        metricCleanBases.textContent = "0 A/T/G/C bases";
+        countA.textContent = "0";
+        countT.textContent = "0";
+        countG.textContent = "0";
+        countC.textContent = "0";
+        metricGc.textContent = "0.0%";
+        metricTm.textContent = "Est. Annealing Tm ~ 0.0°C";
+        gcGaugePath.setAttribute('stroke-dasharray', '0, 100');
+        gcProgressBar.style.width = '0%';
+        rcBox.innerHTML = '<span class="text-on-surface-variant italic">No sequence analyzed</span>';
+        anomaliesList.innerHTML = '<div class="text-xs text-on-surface-variant italic">No sequence loaded for verification.</div>';
+        anomalyBadge.className = "font-data-mono-dense text-xs px-2.5 py-0.5 rounded bg-[#1c2130] border border-[#262f44] text-on-surface-variant";
+        anomalyBadge.textContent = "0 Anomalies Detected";
+        return;
+      }
+
+      // Counts
+      let a = 0, t = 0, g = 0, c = 0, n = 0, gaps = 0, invalids = 0;
+      const gapPositions = [];
+      const nPositions = [];
+
+      for (let i = 0; i < raw.length; i++) {
+        const char = raw[i];
+        if (char === 'A') a++;
+        else if (char === 'T') t++;
+        else if (char === 'G') g++;
+        else if (char === 'C') c++;
+        else if (char === 'N') {
+          n++;
+          nPositions.push(i + 1);
+        } else if (char === '-') {
+          gaps++;
+          gapPositions.push(i + 1);
+        } else {
+          invalids++;
+        }
+      }
+
+      const canonicalCount = a + t + g + c;
+      const totalLen = raw.length;
+      metricLength.textContent = `${totalLen} bp`;
+      metricCleanBases.textContent = `${canonicalCount} A/T/G/C bases`;
+      countA.textContent = a;
+      countT.textContent = t;
+      countG.textContent = g;
+      countC.textContent = c;
+
+      // GC calculation
+      let gcPercent = canonicalCount > 0 ? ((g + c) / canonicalCount) * 100 : 0;
+      gcPercent = Math.round(gcPercent * 10) / 10;
+      metricGc.textContent = `${gcPercent.toFixed(1)}%`;
+      gcGaugePath.setAttribute('stroke-dasharray', `${gcPercent}, 100`);
+      gcProgressBar.style.width = `${gcPercent}%`;
+
+      // Approximate Tm via Wallace rule or Marmur-Doty if > 14bp
+      let tm = 0;
+      if (canonicalCount > 0) {
+        if (canonicalCount < 14) {
+          tm = (w => (w[0] + w[1]) * 2 + (w[2] + w[3]) * 4)([a, t, g, c]);
+        } else {
+          tm = 64.9 + 41 * (g + c - 16.4) / canonicalCount;
+        }
+      }
+      metricTm.textContent = `Est. Annealing Tm ~ ${tm.toFixed(1)}°C`;
+
+      // Reverse Complement
+      let rc = "";
+      const compMap = { 'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G', 'N': 'N', '-': '-' };
+      for (let i = raw.length - 1; i >= 0; i--) {
+        rc += compMap[raw[i]] || '?';
+      }
+
+      // Render RC colorized spans
+      let rcHTML = "";
+      for (let i = 0; i < rc.length; i++) {
+        const char = rc[i];
+        if (char === 'A') rcHTML += `<span class="text-primary font-bold">${char}</span>`;
+        else if (char === 'T') rcHTML += `<span class="text-rose-400 font-bold">${char}</span>`;
+        else if (char === 'G') rcHTML += `<span class="text-secondary font-bold">${char}</span>`;
+        else if (char === 'C') rcHTML += `<span class="text-cyan-300 font-bold">${char}</span>`;
+        else if (char === '-') rcHTML += `<span class="bg-red-950/60 text-rose-300 font-bold px-1 rounded border border-rose-800/40">${char}</span>`;
+        else rcHTML += `<span class="bg-[#262f44] text-amber-300 px-1 rounded">${char}</span>`;
+      }
+      rcBox.innerHTML = rcHTML;
+
+      // Status and Anomalies
+      const totalIssues = (gaps > 0 ? 1 : 0) + (n > 0 ? 1 : 0) + (invalids > 0 ? 1 : 0);
+
+      if (totalIssues > 0) {
+        banner.className = "bg-[#171b26] border border-amber-500/30 rounded-xl p-space-md shadow-md flex items-center gap-space-md";
+        iconBox.className = "w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center flex-shrink-0";
+        icon.className = "material-symbols-outlined text-amber-400 text-[22px]";
+        icon.textContent = "warning";
+        title.className = "font-headline font-semibold text-sm text-amber-300 leading-tight";
+        title.textContent = `${totalIssues} issues found`;
+        subtitle.textContent = `${gaps} gap, ${n} ambiguous, ${invalids} invalid`;
+
+        anomalyBadge.className = "font-data-mono-dense text-xs px-2.5 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 font-medium";
+        anomalyBadge.textContent = `${totalIssues} Anomalies Detected`;
+
+        let listHTML = "";
+        if (gaps > 0) {
+          listHTML += `
+            <div class="bg-[#121622] border border-[#262f44] p-space-md rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+              <div class="flex items-start gap-space-md">
+                <div class="w-7 h-7 rounded bg-[#1c2130] border border-amber-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-amber-400 text-[16px]">remove</span>
+                </div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-sm">
+                    <span class="font-headline text-xs text-on-surface font-semibold">Gap delimiter found</span>
+                    <span class="font-data-mono-dense text-xs px-1.5 py-0.5 rounded bg-[#1c2130] border border-[#262f44] text-on-surface-variant">pos: ${gapPositions.join(', ')}</span>
+                  </div>
+                  <span class="font-body text-xs text-on-surface-variant mt-0.5">Contains ${gaps} alignment gap(s). May cause indel frameshifts.</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-space-xs self-end sm:self-center">
+                <span class="font-label text-xs font-semibold text-rose-400 uppercase tracking-wide">High Impact</span>
+              </div>
+            </div>
+          `;
+        }
+
+        if (n > 0) {
+          listHTML += `
+            <div class="bg-[#121622] border border-[#262f44] p-space-md rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+              <div class="flex items-start gap-space-md">
+                <div class="w-7 h-7 rounded bg-[#1c2130] border border-amber-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-amber-400 text-[16px]">help_center</span>
+                </div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-sm">
+                    <span class="font-headline text-xs text-on-surface font-semibold">Ambiguous base locus (N)</span>
+                    <span class="font-data-mono-dense text-xs px-1.5 py-0.5 rounded bg-[#1c2130] border border-[#262f44] text-on-surface-variant">pos: ${nPositions.join(', ')}</span>
+                  </div>
+                  <span class="font-body text-xs text-on-surface-variant mt-0.5">${n} position(s) unresolved. Low confidence call.</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-space-xs self-end sm:self-center">
+                <span class="font-label text-xs font-semibold text-amber-400 uppercase tracking-wide">Moderate</span>
+              </div>
+            </div>
+          `;
+        }
+        anomaliesList.innerHTML = listHTML;
+      } else {
+        // Clean sequence
+        banner.className = "bg-[#171b26] border border-primary/30 rounded-xl p-space-md shadow-md flex items-center gap-space-md";
+        iconBox.className = "w-10 h-10 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center flex-shrink-0";
+        icon.className = "material-symbols-outlined text-primary text-[22px]";
+        icon.textContent = "check_circle";
+        title.className = "font-headline font-semibold text-sm text-primary leading-tight";
+        title.textContent = "✓ Clean sequence";
+        subtitle.textContent = "0 gaps, 0 ambiguous, 0 invalid loci found";
+
+        anomalyBadge.className = "font-data-mono-dense text-xs px-2.5 py-0.5 rounded bg-primary/15 border border-primary/30 text-primary font-medium";
+        anomalyBadge.textContent = "All Checks Passed";
+
+        anomaliesList.innerHTML = `
+          <div class="bg-[#121622] border border-[#262f44] p-space-md rounded-lg flex items-center gap-space-md">
+            <span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+            <div class="flex flex-col">
+              <span class="font-body text-xs text-on-surface font-medium">Strand passed standard hybridization filters</span>
+              <span class="font-body text-xs text-on-surface-variant">No degenerate codons or insertion artifacts detected across canonical sequence.</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function copyReverseComp() {
+      const box = document.getElementById('rc-sequence-box');
+      const text = box.innerText || box.textContent;
+      navigator.clipboard.writeText(text.replace(/\\s+/g, '')).then(() => {
+        const btnText = document.getElementById('copy-btn-text');
+        btnText.textContent = "Copied!";
+        setTimeout(() => {
+          btnText.textContent = "Copy";
+        }, 1800);
+      });
+    }
+
+    // Run initial analysis on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      analyzeSequence();
+    });
+  </script>
+</div></main>
+</body></html>

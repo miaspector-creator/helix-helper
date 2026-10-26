@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Helix Helper - DNA Sequence Analyzer</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#004b73",
+            "on-error-container": "#ffdad6",
+            "surface-container": "#1b211d",
+            "secondary": "#93ccff",
+            "primary-fixed": "#85f8c4",
+            "secondary-fixed-dim": "#93ccff",
+            "on-tertiary-fixed": "#410004",
+            "tertiary-fixed-dim": "#ffb3ae",
+            "on-secondary": "#003351",
+            "on-secondary-container": "#002c47",
+            "on-primary-container": "#00311f",
+            "primary": "#68dba9",
+            "surface-dim": "#0f1511",
+            "on-tertiary-container": "#570b0e",
+            "secondary-fixed": "#cce5ff",
+            "surface-container-high": "#252b28",
+            "surface": "#0f1511",
+            "surface-container-lowest": "#0a0f0c",
+            "surface-container-highest": "#303632",
+            "on-error": "#690005",
+            "background": "#0f1511",
+            "on-surface-variant": "#bccac0",
+            "primary-container": "#25a475",
+            "surface-variant": "#303632",
+            "surface-bright": "#343b37",
+            "on-primary-fixed-variant": "#005137",
+            "primary-fixed-dim": "#68dba9",
+            "tertiary-container": "#dd706b",
+            "error": "#ffb4ab",
+            "surface-container-low": "#171d19",
+            "inverse-primary": "#006c4a",
+            "error-container": "#93000a",
+            "inverse-surface": "#dee4de",
+            "on-primary-fixed": "#002114",
+            "surface-tint": "#68dba9",
+            "outline": "#87948b",
+            "on-tertiary-fixed-variant": "#7f2928",
+            "on-secondary-fixed": "#001d31",
+            "inverse-on-surface": "#2c322e",
+            "tertiary": "#ffb3ae",
+            "secondary-container": "#3198dc",
+            "on-primary": "#003825",
+            "outline-variant": "#3d4a42",
+            "tertiary-fixed": "#ffdad7",
+            "on-background": "#dee4de",
+            "on-surface": "#dee4de",
+            "on-tertiary": "#601214"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem",
+            "space-lg": "1.25rem"
+          },
+          "fontFamily": {
+            "sans": ["Inter", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"],
+            "label-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["JetBrains Mono"],
+            "label-lg": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "body-sm": ["JetBrains Mono"],
+            "data-mono-dense": ["JetBrains Mono"],
+            "body-md": ["JetBrains Mono"],
+            "headline-xl": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-sm": ["Inter"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* DNA watermark pattern */
+    .lab-watermark {
+      background-image: radial-gradient(circle at 10% 20%, rgba(104, 219, 169, 0.04) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(147, 204, 255, 0.04) 0%, transparent 40%);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen font-sans antialiased relative selection:bg-primary selection:text-on-primary">
+<!-- Subtle Double Helix Background Motif -->
+<div class="fixed inset-0 pointer-events-none lab-watermark overflow-hidden z-0">
+<svg class="absolute -right-24 -top-24 w-[640px] h-[640px] opacity-[0.035] text-primary" fill="currentColor" viewbox="0 0 100 100">
+<path d="M20,10 Q50,30 80,10 Q50,50 20,70 Q50,90 80,70" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="4"></path>
+<path d="M80,10 Q50,30 20,10 Q50,50 80,70 Q50,90 20,70" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="4"></path>
+<circle cx="35" cy="20" r="3"></circle>
+<circle cx="65" cy="20" r="3"></circle>
+<circle cx="50" cy="40" r="3"></circle>
+<circle cx="35" cy="60" r="3"></circle>
+<circle cx="65" cy="60" r="3"></circle>
+</svg>
+<svg class="absolute -left-20 bottom-10 w-[520px] h-[520px] opacity-[0.025] text-secondary" fill="currentColor" viewbox="0 0 100 100">
+<path d="M10,20 Q50,40 90,20 Q50,60 10,80 Q50,100 90,80" fill="none" stroke="currentColor" stroke-width="3"></path>
+</svg>
+</div>
+<div class="relative z-10 flex flex-col min-h-screen max-w-[1440px] mx-auto px-6 lg:px-12 py-6">
+<!-- Minimal Lab Header (App Name only) -->
+<header class="flex items-center justify-between border-b border-outline-variant/30 pb-4 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container border border-outline-variant flex items-center justify-center text-primary shadow-sm">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 48 48">
+<path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+</svg>
+</div>
+<h1 class="text-white text-lg font-bold tracking-tight">Helix Helper</h1>
+</div>
+</header>
+<!-- Page Title & Subtitle Banner -->
+<section class="mb-8">
+<div class="flex flex-col gap-1.5">
+<h2 class="text-white text-3xl lg:text-4xl font-black tracking-tight font-sans">DNA Sequence Analyzer</h2>
+<p class="text-on-surface-variant text-base font-normal">Instant genomic metrics, GC stoichiometry, and strand validation.</p>
+</div>
+</section>
+<!-- Main Workbench Area: 2-Column Responsive Desktop Grid -->
+<main class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pb-16">
+<!-- LEFT COLUMN: Input, Presets, Primary Analysis Action (5 cols) -->
+<section class="lg:col-span-5 flex flex-col gap-6">
+<div class="bg-surface-container rounded-xl border border-outline-variant/40 p-5 shadow-lg flex flex-col gap-4">
+<!-- Input Header & Pill -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-white text-sm font-semibold tracking-wide">Target Strand (5' → 3')</span>
+<span class="bg-surface-container-high border border-outline-variant/50 text-primary text-xs font-mono font-medium px-2 py-0.5 rounded-full" id="bp-counter">42 bp</span>
+</div>
+<button class="text-outline hover:text-white text-xs font-mono transition-colors flex items-center gap-1" id="clear-btn">
+<span class="material-symbols-outlined text-[14px]">close</span>
+              Clear
+            </button>
+</div>
+<!-- Monospace Sequence Textarea -->
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-mono text-xs sm:text-sm leading-relaxed p-4 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none shadow-inner tracking-wider" id="sequence-input" placeholder="Paste test DNA sample here for calculations" rows="6" spellcheck="false">ATGCGATCGATCGATCGCGATATCGATCGA-TGCNNNATTCG</textarea>
+<div class="absolute bottom-2.5 right-3 text-[10px] font-mono text-outline/60 select-none uppercase tracking-widest">
+              FASTA / Raw
+            </div>
+</div>
+<!-- Quick Presets -->
+<div class="flex flex-col gap-2">
+<span class="text-outline text-xs font-medium tracking-wide">Quick Presets</span>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-container-high hover:bg-surface-bright text-white border border-outline-variant/60 hover:border-primary/50 transition-all flex items-center gap-1.5" id="preset-errors">
+<span>With Errors (Demo)</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-container-high hover:bg-surface-bright text-on-surface-variant hover:text-white border border-outline-variant/40 hover:border-primary/50 transition-all" id="preset-clean">
+<span>Clean DNA</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-container-high hover:bg-surface-bright text-on-surface-variant hover:text-white border border-outline-variant/40 hover:border-primary/50 transition-all" id="preset-primers">
+<span>Sample Primers</span>
+</button>
+</div>
+</div>
+<!-- Single Prominent Action Button -->
+<div class="pt-2">
+<button class="w-full h-12 bg-primary hover:bg-primary-fixed text-on-primary font-bold text-base rounded-lg transition-all shadow-md hover:shadow-primary/20 flex items-center justify-center gap-2 tracking-wide cursor-pointer active:scale-[0.99]" id="analyze-btn">
+<span>Analyze sequence ⚡</span>
+</button>
+</div>
+</div>
+<!-- Analytical Context Card / Tooltip Info -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-4 text-xs text-on-surface-variant leading-relaxed">
+<div class="flex items-center gap-2 text-white font-medium mb-1">
+<span class="material-symbols-outlined text-sm text-secondary">science</span>
+<span>Deterministic IUPAC Parsing</span>
+</div>
+<p class="font-sans">
+            Evaluates nucleic stoichiometric coefficients, nearest-neighbor melting parameters (<span class="font-mono text-outline">Tm</span>), and flags synthetic indel gaps or degenerate bases (<span class="font-mono text-primary">N, R, Y</span>).
+          </p>
+</div>
+</section>
+<!-- RIGHT COLUMN: Status Banner & Calculation Results Cards (7 cols) -->
+<section class="lg:col-span-7 flex flex-col gap-5">
+<!-- Status Banner (Exact text & state handling) -->
+<div class="bg-surface-container border-l-4 border-error border border-outline-variant/40 rounded-r-xl p-4 flex items-start gap-3.5 shadow-md transition-all" id="status-banner">
+<span class="material-symbols-outlined text-error text-2xl shrink-0 mt-0.5">warning</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold text-sm tracking-tight" id="status-title">2 issues found</span>
+<span class="bg-error/20 text-error border border-error/30 text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold" id="status-pill">ATTENTION</span>
+</div>
+<p class="text-on-surface-variant text-xs mt-0.5 font-mono" id="status-subtext">1 gap, 3 ambiguous, 0 invalid</p>
+</div>
+</div>
+<!-- Results Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Card 1: LENGTH & Stoichiometry Breakdown -->
+<div class="bg-surface-container rounded-xl border border-outline-variant/40 p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between text-outline text-xs font-semibold uppercase tracking-wider mb-2">
+<span>LENGTH</span>
+<span class="material-symbols-outlined text-base">straighten</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-mono text-white tracking-tight" id="metric-length-val">42 bp</span>
+</div>
+<p class="text-on-surface-variant text-xs font-sans mt-1" id="metric-bases-sub">38 A/T/G/C bases</p>
+</div>
+<!-- Base breakdown pills -->
+<div class="pt-4 border-t border-outline-variant/30 mt-4">
+<div class="grid grid-cols-4 gap-1.5 text-center font-mono">
+<div class="bg-surface-container-high py-1.5 rounded border border-outline-variant/30">
+<span class="text-[10px] text-outline block">A</span>
+<span class="text-xs font-bold text-primary" id="count-a">9</span>
+</div>
+<div class="bg-surface-container-high py-1.5 rounded border border-outline-variant/30">
+<span class="text-[10px] text-outline block">T</span>
+<span class="text-xs font-bold text-secondary" id="count-t">10</span>
+</div>
+<div class="bg-surface-container-high py-1.5 rounded border border-outline-variant/30">
+<span class="text-[10px] text-outline block">G</span>
+<span class="text-xs font-bold text-primary" id="count-g">10</span>
+</div>
+<div class="bg-surface-container-high py-1.5 rounded border border-outline-variant/30">
+<span class="text-[10px] text-outline block">C</span>
+<span class="text-xs font-bold text-secondary" id="count-c">9</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: GC Content (Gauge + Tm) -->
+<div class="bg-surface-container rounded-xl border border-outline-variant/40 p-5 flex flex-col justify-between">
+<div class="flex items-center justify-between text-outline text-xs font-semibold uppercase tracking-wider">
+<span>GC Content</span>
+<span class="material-symbols-outlined text-base">donut_large</span>
+</div>
+<div class="flex items-center gap-4 my-2">
+<!-- Radial Meter SVG -->
+<div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+<!-- Background circle -->
+<path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<!-- Filled progress arc (50% = 50 stroke-dasharray) -->
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" id="gauge-arc" stroke="currentColor" stroke-dasharray="50, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-primary">percent</span>
+</div>
+</div>
+<div>
+<span class="text-3xl font-black font-mono text-white tracking-tight" id="gc-val">50.0%</span>
+<span class="block text-[11px] text-on-surface-variant font-mono mt-0.5">Optimal PCR range</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-xs text-on-surface-variant font-mono" id="tm-val">Est. Annealing Tm ~ 67.7°C</span>
+<span class="text-[10px] font-mono text-outline">±1.2°C</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Reverse Complement (5' → 3') -->
+<div class="bg-surface-container rounded-xl border border-outline-variant/40 p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-outline text-xs font-semibold uppercase tracking-wider">Reverse Complement (5' → 3')</span>
+<button class="text-xs text-primary hover:text-primary-fixed flex items-center gap-1 font-mono transition-colors" id="copy-rc-btn">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<!-- Color-coded Nucleotide Sequence View -->
+<div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-x-auto">
+<div class="font-mono text-xs sm:text-sm tracking-[0.18em] leading-relaxed select-all break-all whitespace-normal" id="rc-sequence-display">
+<span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-tertiary font-bold bg-tertiary-container/20 px-0.5 rounded">N</span><span class="text-tertiary font-bold bg-tertiary-container/20 px-0.5 rounded">N</span><span class="text-tertiary font-bold bg-tertiary-container/20 px-0.5 rounded">N</span><span class="text-primary font-bold">G</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">A</span><span class="text-error font-bold bg-error-container/30 px-1 rounded">-</span><span class="text-secondary font-bold">T</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span><span class="text-primary font-bold">A</span><span class="text-secondary font-bold">T</span><span class="text-secondary font-bold">C</span><span class="text-primary font-bold">G</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Quality & Sequence Integrity (Checks Panel) -->
+<div class="bg-surface-container rounded-xl border border-outline-variant/40 p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-primary">verified_user</span>
+<span class="text-white text-xs font-semibold uppercase tracking-wider">Quality &amp; Sequence Integrity</span>
+</div>
+<span class="text-[11px] font-mono text-error font-medium" id="anomalies-count-tag">2 Anomalies Detected</span>
+</div>
+<!-- List of Anomalies -->
+<div class="flex flex-col gap-2.5 pt-1" id="anomalies-list">
+<!-- Item 1: Gap delimiter found -->
+<div class="flex items-start justify-between bg-surface-container-high/60 border border-outline-variant/40 rounded-lg p-3">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-error text-base mt-0.5">remove</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-white text-xs font-semibold">Gap delimiter found</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 bg-error/15 text-error rounded border border-error/20">pos: 31</span>
+</div>
+<p class="text-on-surface-variant text-[11px] mt-0.5">Contains 1 alignment gap(s). May cause indel frameshifts.</p>
+</div>
+</div>
+<span class="text-[10px] font-mono text-outline uppercase px-2 py-0.5 bg-surface-container-lowest rounded">INDEL</span>
+</div>
+<!-- Item 2: Ambiguous base locus (N) -->
+<div class="flex items-start justify-between bg-surface-container-high/60 border border-outline-variant/40 rounded-lg p-3">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-base mt-0.5">help</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-white text-xs font-semibold">Ambiguous base locus (N)</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 bg-tertiary/15 text-tertiary rounded border border-tertiary/20">pos: 35, 36, 37</span>
+</div>
+<p class="text-on-surface-variant text-[11px] mt-0.5">3 position(s) unresolved. Low confidence call.</p>
+</div>
+</div>
+<span class="text-[10px] font-mono text-outline uppercase px-2 py-0.5 bg-surface-container-lowest rounded">IUPAC</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Interactive Logic for Demo / Sequence Analyzer Micro-Interactions -->
+<script>
+    const textarea = document.getElementById('sequence-input');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const bpCounter = document.getElementById('bp-counter');
+    const statusBanner = document.getElementById('status-banner');
+    const statusTitle = document.getElementById('status-title');
+    const statusSubtext = document.getElementById('status-subtext');
+    const statusPill = document.getElementById('status-pill');
+    const copyRcBtn = document.getElementById('copy-rc-btn');
+    
+    // Preset buttons
+    const presetErrors = document.getElementById('preset-errors');
+    const presetClean = document.getElementById('preset-clean');
+    const presetPrimers = document.getElementById('preset-primers');
+
+    const SAMPLE_WITH_ERRORS = "ATGCGATCGATCGATCGCGATATCGATCGA-TGCNNNATTCG";
+    const SAMPLE_CLEAN = "ATGCGATCGATCGATCGCGATATCGATCGATGCAATTCG";
+    const SAMPLE_PRIMER = "GTTTTCCCAGTCACGAC";
+
+    function updateCounter() {
+      const len = textarea.value.trim().length;
+      bpCounter.innerText = `${len} bp`;
+    }
+
+    textarea.addEventListener('input', updateCounter);
+
+    // Complement mapping table
+    const complementMap = {
+      'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G',
+      'a': 't', 't': 'a', 'g': 'c', 'c': 'g',
+      '-': '-', 'N': 'N', 'n': 'n'
+    };
+
+    function calculateAnalysis(seq) {
+      const raw = seq.trim().toUpperCase();
+      const length = raw.length;
+      
+      if (length === 0) {
+        statusBanner.className = "bg-surface-container border-l-4 border-outline border border-outline-variant/40 rounded-r-xl p-4 flex items-start gap-3.5 shadow-md transition-all";
+        statusBanner.querySelector('.material-symbols-outlined').innerText = "info";
+        statusBanner.querySelector('.material-symbols-outlined').className = "material-symbols-outlined text-outline text-2xl shrink-0 mt-0.5";
+        statusTitle.innerText = "Paste a DNA sequence to start.";
+        statusSubtext.innerText = "Supports raw strands, FASTA, alignment gaps (-), and degenerate codes.";
+        statusPill.style.display = 'none';
+        return;
+      }
+
+      let a = 0, t = 0, g = 0, c = 0, gaps = 0, n = 0, invalid = 0;
+      let gapPositions = [];
+      let nPositions = [];
+
+      for (let i = 0; i < raw.length; i++) {
+        const char = raw[i];
+        const pos = i + 1;
+        if (char === 'A') a++;
+        else if (char === 'T') t++;
+        else if (char === 'G') g++;
+        else if (char === 'C') c++;
+        else if (char === '-') { gaps++; gapPositions.push(pos); }
+        else if (char === 'N') { n++; nPositions.push(pos); }
+        else { invalid++; }
+      }
+
+      const canonicalBases = a + t + g + c;
+      const gc = canonicalBases > 0 ? ((g + c) / canonicalBases) * 100 : 0;
+      // Wallace rule approximation
+      const tm = canonicalBases > 0 ? (64.9 + 41 * (g + c - 16.4) / canonicalBases).toFixed(1) : "0.0";
+
+      // Update Card 1
+      document.getElementById('metric-length-val').innerText = `${length} bp`;
+      document.getElementById('metric-bases-sub').innerText = `${canonicalBases} A/T/G/C bases`;
+      document.getElementById('count-a').innerText = a;
+      document.getElementById('count-t').innerText = t;
+      document.getElementById('count-g').innerText = g;
+      document.getElementById('count-c').innerText = c;
+
+      // Update Card 2
+      document.getElementById('gc-val').innerText = `${gc.toFixed(1)}%`;
+      document.getElementById('tm-val').innerText = `Est. Annealing Tm ~ ${tm}°C`;
+      document.getElementById('gauge-arc').setAttribute('stroke-dasharray', `${Math.round(gc)}, 100`);
+
+      // Reverse complement
+      const revCompArray = raw.split('').reverse().map(ch => complementMap[ch] || '?');
+      const rcHtml = revCompArray.map(ch => {
+        if (ch === 'A' || ch === 'G') return `<span class="text-primary font-bold">${ch}</span>`;
+        if (ch === 'T' || ch === 'C') return `<span class="text-secondary font-bold">${ch}</span>`;
+        if (ch === 'N') return `<span class="text-tertiary font-bold bg-tertiary-container/20 px-0.5 rounded">${ch}</span>`;
+        if (ch === '-') return `<span class="text-error font-bold bg-error-container/30 px-1 rounded">-</span>`;
+        return `<span class="text-outline font-bold">${ch}</span>`;
+      }).join('');
+      document.getElementById('rc-sequence-display').innerHTML = rcHtml;
+
+      // Quality checks / Anomalies
+      const totalIssues = (gaps > 0 ? 1 : 0) + (n > 0 ? 1 : 0) + (invalid > 0 ? 1 : 0);
+      const anomaliesList = document.getElementById('anomalies-list');
+      const anomaliesTag = document.getElementById('anomalies-count-tag');
+
+      if (totalIssues > 0) {
+        statusBanner.className = "bg-surface-container border-l-4 border-error border border-outline-variant/40 rounded-r-xl p-4 flex items-start gap-3.5 shadow-md transition-all";
+        statusBanner.querySelector('.material-symbols-outlined').innerText = "warning";
+        statusBanner.querySelector('.material-symbols-outlined').className = "material-symbols-outlined text-error text-2xl shrink-0 mt-0.5";
+        statusTitle.innerText = `${totalIssues} issues found`;
+        statusSubtext.innerText = `${gaps} gap, ${n} ambiguous, ${invalid} invalid`;
+        statusPill.style.display = 'inline-block';
+        statusPill.innerText = "ATTENTION";
+        statusPill.className = "bg-error/20 text-error border border-error/30 text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold";
+        anomaliesTag.innerText = `${totalIssues} Anomalies Detected`;
+        anomaliesTag.className = "text-[11px] font-mono text-error font-medium";
+
+        let html = '';
+        if (gaps > 0) {
+          html += `
+            <div class="flex items-start justify-between bg-surface-container-high/60 border border-outline-variant/40 rounded-lg p-3">
+              <div class="flex items-start gap-2.5">
+                <span class="material-symbols-outlined text-error text-base mt-0.5">remove</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-white text-xs font-semibold">Gap delimiter found</span>
+                    <span class="font-mono text-[10px] px-1.5 py-0.5 bg-error/15 text-error rounded border border-error/20">pos: ${gapPositions.join(', ')}</span>
+                  </div>
+                  <p class="text-on-surface-variant text-[11px] mt-0.5">Contains ${gaps} alignment gap(s). May cause indel frameshifts.</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono text-outline uppercase px-2 py-0.5 bg-surface-container-lowest rounded">INDEL</span>
+            </div>
+          `;
+        }
+        if (n > 0) {
+          html += `
+            <div class="flex items-start justify-between bg-surface-container-high/60 border border-outline-variant/40 rounded-lg p-3">
+              <div class="flex items-start gap-2.5">
+                <span class="material-symbols-outlined text-tertiary text-base mt-0.5">help</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-white text-xs font-semibold">Ambiguous base locus (N)</span>
+                    <span class="font-mono text-[10px] px-1.5 py-0.5 bg-tertiary/15 text-tertiary rounded border border-tertiary/20">pos: ${nPositions.join(', ')}</span>
+                  </div>
+                  <p class="text-on-surface-variant text-[11px] mt-0.5">${n} position(s) unresolved. Low confidence call.</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono text-outline uppercase px-2 py-0.5 bg-surface-container-lowest rounded">IUPAC</span>
+            </div>
+          `;
+        }
+        anomaliesList.innerHTML = html;
+      } else {
+        // Clean sequence
+        statusBanner.className = "bg-surface-container border-l-4 border-primary border border-outline-variant/40 rounded-r-xl p-4 flex items-start gap-3.5 shadow-md transition-all";
+        statusBanner.querySelector('.material-symbols-outlined').innerText = "check_circle";
+        statusBanner.querySelector('.material-symbols-outlined').className = "material-symbols-outlined text-primary text-2xl shrink-0 mt-0.5";
+        statusTitle.innerText = "✓ Clean sequence";
+        statusSubtext.innerText = "0 gaps, 0 ambiguous, 0 invalid. Ready for primer design or synthesis.";
+        statusPill.style.display = 'inline-block';
+        statusPill.innerText = "VALIDATED";
+        statusPill.className = "bg-primary/20 text-primary border border-primary/30 text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold";
+        anomaliesTag.innerText = "0 Anomalies Detected";
+        anomaliesTag.className = "text-[11px] font-mono text-primary font-medium";
+
+        anomaliesList.innerHTML = `
+          <div class="flex items-center gap-3 bg-surface-container-high/40 border border-outline-variant/30 rounded-lg p-3 text-xs text-on-surface-variant font-mono">
+            <span class="material-symbols-outlined text-primary text-base">verified</span>
+            <span>All base pairs conform strictly to standard IUPAC adenine, thymine, cytosine, and guanine taxonomy.</span>
+          </div>
+        `;
+      }
+    }
+
+    // Event listeners
+    presetErrors.addEventListener('click', () => {
+      textarea.value = SAMPLE_WITH_ERRORS;
+      updateCounter();
+      calculateAnalysis(SAMPLE_WITH_ERRORS);
+    });
+
+    presetClean.addEventListener('click', () => {
+      textarea.value = SAMPLE_CLEAN;
+      updateCounter();
+      calculateAnalysis(SAMPLE_CLEAN);
+    });
+
+    presetPrimers.addEventListener('click', () => {
+      textarea.value = SAMPLE_PRIMER;
+      updateCounter();
+      calculateAnalysis(SAMPLE_PRIMER);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      textarea.value = '';
+      updateCounter();
+      calculateAnalysis('');
+    });
+
+    analyzeBtn.addEventListener('click', () => {
+      calculateAnalysis(textarea.value);
+    });
+
+    // Copy reverse complement logic
+    copyRcBtn.addEventListener('click', () => {
+      const text = document.getElementById('rc-sequence-display').innerText.replace(/\s+/g, '');
+      navigator.clipboard.writeText(text).then(() => {
+        const originalContent = copyRcBtn.innerHTML;
+        copyRcBtn.innerHTML = `<span class="material-symbols-outlined text-[14px]">done</span><span>Copied</span>`;
+        setTimeout(() => {
+          copyRcBtn.innerHTML = originalContent;
+        }, 1800);
+      });
+    });
+
+    // Initial render
+    updateCounter();
+    calculateAnalysis(textarea.value);
+  </script>
+</body></html>
