@@ -1,186 +1,245 @@
+/*
+ * Helix Helper – page behaviour
+ * ------------------------------------------------------------
+ * Connects the page to the pure functions in logic.js
+ * (window.HelixLogic). All DNA rules live there; this file only
+ * reads the input and shows the output.
+ */
 (function () {
   'use strict';
 
-  function escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+  var Logic = window.HelixLogic;
+  var ERROR_EXAMPLE = 'ATGXC';
+
+  // ---- Elements ----
+  var input        = document.getElementById('sequence-input');
+  var letterCount  = document.getElementById('letter-count');
+  var analyzeBtn   = document.getElementById('analyze-btn');
+  var exampleBtn   = document.getElementById('example-btn');
+  var errorExBtn   = document.getElementById('error-example-btn');
+  var resetBtn     = document.getElementById('reset-btn');
+  var copyAllBtn   = document.getElementById('copy-all-btn');
+  var messageBox   = document.getElementById('message-box');
+  var results      = document.getElementById('results');
+  var statusText   = document.getElementById('status-text');
+  var gcRing       = document.getElementById('gc-ring');
+
+  var out = {
+    original:  document.getElementById('out-original'),
+    cleaned:   document.getElementById('out-cleaned'),
+    length:    document.getElementById('out-length'),
+    gc:        document.getElementById('out-gc'),
+    gcWorking: document.getElementById('out-gc-working'),
+    revcomp:   document.getElementById('out-revcomp'),
+    rna:       document.getElementById('out-rna'),
+    countG:    document.getElementById('count-g'),
+    countC:    document.getElementById('count-c'),
+    countAT:   document.getElementById('count-at')
+  };
+
+  var lastResult = null;   // used by "Copy all results"
+
+  // ---- Small helpers ----
+
+  /** Build an element with optional class and text (safe: never uses innerHTML). */
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
   }
 
-  function buildMarkedSequence(cleaned, invalidList) {
-    var invalidPositions = {};
-
-    invalidList.forEach(function (item) {
-      invalidPositions[item.position] = true;
-    });
-
-    var segments = [];
-
-    for (var index = 0; index < cleaned.length; index += 1) {
-      var character = cleaned.charAt(index);
-      var escaped = escapeHtml(character);
-
-      if (invalidPositions[index + 1]) {
-        segments.push('<mark>' + escaped + '</mark>');
+  /** Show a sequence with each base coloured; invalid positions get <mark>. */
+  function renderSequence(target, seq, badPositions) {
+    target.textContent = '';
+    target.setAttribute('data-raw', seq);
+    for (var i = 0; i < seq.length; i++) {
+      var ch = seq[i];
+      var node;
+      if (badPositions && badPositions[i + 1]) {
+        node = el('mark', '', ch);
+      } else if (ch === 'A' || ch === 'T' || ch === 'G' || ch === 'C') {
+        node = el('span', 'b-' + ch, ch);
+      } else if (ch === 'U') {
+        node = el('span', 'b-T', ch);       // RNA: U takes T's colour
       } else {
-        segments.push(escaped);
+        node = document.createTextNode(ch);
       }
+      target.appendChild(node);
     }
-
-    return segments.join('');
   }
 
-  function copyText(value) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(value);
-    }
-
-    var helper = document.createElement('textarea');
-    helper.value = value;
-    helper.setAttribute('readonly', 'readonly');
-    helper.style.position = 'fixed';
-    helper.style.top = '-9999px';
-    document.body.appendChild(helper);
-    helper.select();
-    document.execCommand('copy');
-    document.body.removeChild(helper);
-    return Promise.resolve();
+  function updateLetterCount() {
+    var n = Logic.cleanSequence(input.value).length;
+    letterCount.textContent = n + (n === 1 ? ' letter' : ' letters');
   }
 
-  function updateMessageBox(type, html) {
-    var box = document.getElementById('message-box');
-    box.hidden = false;
-    box.className = 'message-box';
-    if (type === 'error') {
-      box.classList.add('error');
-    }
-
-    box.innerHTML = html;
+  function hideMessage() {
+    messageBox.hidden = true;
+    messageBox.textContent = '';
   }
 
-  function hideMessageBox() {
-    var box = document.getElementById('message-box');
-    box.hidden = true;
-    box.innerHTML = '';
+  function showEmpty(message) {
+    results.hidden = true;
+    messageBox.className = 'message message-info';
+    messageBox.textContent = '';
+    messageBox.appendChild(el('span', 'message-title', message));
+    messageBox.appendChild(el('span', '', 'Or tap "Example sequence" to see how it works.'));
+    messageBox.hidden = false;
   }
 
-  function setResultVisible(visible) {
-    var section = document.getElementById('results');
-    section.hidden = !visible;
+  function showInvalid(result) {
+    results.hidden = true;
+    var count = result.invalid.length;
+    messageBox.className = 'message message-error';
+    messageBox.textContent = '';
+
+    messageBox.appendChild(el('span', 'message-title',
+      count + ' letter' + (count === 1 ? '' : 's') + ' to fix before analyzing'));
+
+    var list = el('ul');
+    result.messages.forEach(function (m) { list.appendChild(el('li', '', 'Error: ' + m)); });
+    messageBox.appendChild(list);
+
+    var bad = {};
+    result.invalid.forEach(function (item) { bad[item.position] = true; });
+    var seq = el('p', 'seq');
+    renderSequence(seq, result.cleaned, bad);
+    messageBox.appendChild(seq);
+
+    messageBox.appendChild(el('p', 'tip',
+      'Only A, T, G and C are allowed. Positions count from 1, after spaces are removed.'));
+    messageBox.hidden = false;
   }
 
-  function renderEmptyState() {
-    setResultVisible(false);
-    updateMessageBox('info', '<p>' + escapeHtml('Paste a DNA sequence to start.') + '</p>');
-  }
-
-  function renderInvalidState(result) {
-    setResultVisible(false);
-
-    var countText = result.invalid.length === 1 ? '1 invalid character' : result.invalid.length + ' invalid characters';
-    var messageHtml = '<p>Found ' + countText + '.</p>';
-
-    result.messages.forEach(function (message) {
-      messageHtml += '<p>Error: ' + escapeHtml(message) + '</p>';
-    });
-
-    messageHtml += '<p class="sequence-markup">' + buildMarkedSequence(result.cleaned, result.invalid) + '</p>';
-    updateMessageBox('error', messageHtml);
-  }
-
-  function renderValidState(result) {
-    setResultVisible(true);
-    hideMessageBox();
-
+  function showResults(result) {
+    hideMessage();
     var gc = result.gc;
-    var gcSummary = 'G = ' + gc.g + ', C = ' + gc.c + ' → ' + gc.gc + ' of ' + gc.length + ' bases = ' + gc.percentText;
 
-    document.getElementById('result-original').textContent = result.original;
-    document.getElementById('result-cleaned').textContent = result.cleaned;
-    document.getElementById('result-length').textContent = String(result.length);
-    document.getElementById('result-gc').textContent = gc.percentText;
-    document.getElementById('result-gc-summary').textContent = gcSummary;
-    document.getElementById('result-reverse').textContent = result.reverseComplement;
-    document.getElementById('result-rna').textContent = result.rna;
+    statusText.textContent = 'Valid sequence: all ' + result.length +
+      ' letters are A, T, G or C.';
+
+    out.length.textContent = result.length;
+    out.gc.textContent = gc.percentText;
+    out.countG.textContent = gc.g;
+    out.countC.textContent = gc.c;
+    out.countAT.textContent = gc.length - gc.gc;
+    out.gcWorking.textContent =
+      'G (' + gc.g + ') + C (' + gc.c + ') = ' + gc.gc + ' of ' + gc.length +
+      ' letters → ' + gc.gc + ' ÷ ' + gc.length + ' × 100 = ' + gc.percentText;
+
+    // Ring: circumference is 100, so the percentage is the filled length
+    gcRing.setAttribute('stroke-dasharray', gc.percent.toFixed(1) + ' 100');
+
+    renderSequence(out.cleaned, result.cleaned);
+    out.original.textContent = result.original;
+    renderSequence(out.revcomp, result.reverseComplement);
+    renderSequence(out.rna, result.rna);
+
+    results.hidden = false;
   }
 
-  function analyzeSequence() {
-    var input = document.getElementById('sequence-input');
-    var result = window.HelixLogic.analyze(input.value);
+  // ---- Main actions ----
+  function runAnalysis() {
+    var result = Logic.analyze(input.value);
+    lastResult = null;
 
     if (result.status === 'empty') {
-      renderEmptyState();
+      showEmpty(result.message);
+      input.focus();
       return;
     }
-
     if (result.status === 'invalid') {
-      renderInvalidState(result);
+      showInvalid(result);
       return;
     }
-
-    renderValidState(result);
+    lastResult = result;
+    showResults(result);
   }
 
-  function resetForm() {
-    var input = document.getElementById('sequence-input');
+  function loadExample(seq) {
+    input.value = seq;
+    updateLetterCount();
+    runAnalysis();
+  }
+
+  function resetAll() {
     input.value = '';
-    hideMessageBox();
-    setResultVisible(false);
+    lastResult = null;
+    updateLetterCount();
+    hideMessage();
+    results.hidden = true;
+    gcRing.setAttribute('stroke-dasharray', '0 100');
     input.focus();
   }
 
-  function bindCopyButtons() {
-    var buttons = document.querySelectorAll('[data-copy-target]');
-
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        var targetId = button.getAttribute('data-copy-target');
-        var output = document.getElementById(targetId);
-        var value = output.textContent || '';
-
-        copyText(value).then(function () {
-          var original = button.textContent;
-          button.textContent = 'Copied';
-          window.setTimeout(function () {
-            button.textContent = original;
-          }, 1000);
-        }).catch(function () {
-          button.textContent = 'Copy failed';
-          window.setTimeout(function () {
-            button.textContent = 'Copy';
-          }, 1000);
-        });
-      });
-    });
+  // ---- Copying ----
+  function flash(button, label) {
+    var original = button.getAttribute('data-label') || button.textContent;
+    button.setAttribute('data-label', original);
+    button.textContent = label;
+    setTimeout(function () { button.textContent = original; }, 1500);
   }
 
-  function initialize() {
-    var input = document.getElementById('sequence-input');
-    var analyzeButton = document.getElementById('analyze-button');
-    var exampleButton = document.getElementById('example-button');
-    var resetButton = document.getElementById('reset-button');
-
-    analyzeButton.addEventListener('click', analyzeSequence);
-    exampleButton.addEventListener('click', function () {
-      input.value = window.HelixLogic.EXAMPLE_SEQUENCE;
-      analyzeSequence();
-    });
-    resetButton.addEventListener('click', resetForm);
-
-    input.addEventListener('keydown', function (event) {
-      if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
-        event.preventDefault();
-        analyzeSequence();
-      }
-    });
-
-    bindCopyButtons();
-    hideMessageBox();
-    setResultVisible(false);
+  function fallbackCopy(text) {
+    var temp = el('textarea');
+    temp.value = text;
+    temp.setAttribute('readonly', '');
+    temp.style.position = 'fixed';
+    temp.style.opacity = '0';
+    document.body.appendChild(temp);
+    temp.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(temp);
+    return ok;
   }
 
-  document.addEventListener('DOMContentLoaded', initialize);
-}());
+  function copyText(text, button) {
+    if (!text) return;
+    function fallback() { flash(button, fallbackCopy(text) ? 'Copied!' : 'Copy failed'); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flash(button, 'Copied!'); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  function allResultsText(r) {
+    return [
+      'Helix Helper results',
+      'Sequence: ' + r.cleaned,
+      'Length: ' + r.length,
+      'GC content: ' + r.gc.percentText + ' (' + r.gc.gc + ' of ' + r.gc.length + ')',
+      'Reverse complement: ' + r.reverseComplement,
+      'RNA: ' + r.rna
+    ].join('\n');
+  }
+
+  // ---- Events ----
+  input.addEventListener('input', updateLetterCount);
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      runAnalysis();
+    }
+  });
+
+  analyzeBtn.addEventListener('click', runAnalysis);
+  exampleBtn.addEventListener('click', function () { loadExample(Logic.EXAMPLE_SEQUENCE); });
+  errorExBtn.addEventListener('click', function () { loadExample(ERROR_EXAMPLE); });
+  resetBtn.addEventListener('click', resetAll);
+
+  document.querySelectorAll('.btn-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-copy'));
+      copyText(target ? target.getAttribute('data-raw') : '', btn);
+    });
+  });
+
+  copyAllBtn.addEventListener('click', function () {
+    if (lastResult) copyText(allResultsText(lastResult), copyAllBtn);
+  });
+
+  updateLetterCount();
+})();
