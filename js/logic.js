@@ -2,13 +2,21 @@
   'use strict';
 
   var EXAMPLE_SEQUENCE = 'ATGGCCATTGTAATGGGCCGC';
+  var INVISIBLE_CHARACTER_CODES = {
+    '\u200B': 'U+200B',
+    '\u200C': 'U+200C',
+    '\u200D': 'U+200D',
+    '\uFEFF': 'U+FEFF'
+  };
 
   function cleanSequence(raw) {
     if (raw === null || typeof raw === 'undefined') {
       return '';
     }
 
-    return String(raw).replace(/\s+/g, '').toUpperCase();
+    return String(raw).replace(/\s+/g, function (whitespace) {
+      return whitespace.replace(/[^\uFEFF]/g, '');
+    }).toUpperCase();
   }
 
   function findInvalidCharacters(cleaned) {
@@ -92,6 +100,11 @@
   }
 
   function formatInvalid(item) {
+    var code = INVISIBLE_CHARACTER_CODES[item.char];
+    if (code) {
+      return 'invisible character (' + code + ') at position ' + item.position;
+    }
+
     return '"' + item.char + '" at position ' + item.position;
   }
 
