@@ -10,6 +10,12 @@
 
   var Logic = window.HelixLogic;
   var ERROR_EXAMPLE = 'ATGXC';
+  var INVISIBLE_CHARACTERS = {
+    '\u200B': true,
+    '\u200C': true,
+    '\u200D': true,
+    '\uFEFF': true
+  };
 
   // ---- Elements ----
   var input        = document.getElementById('sequence-input');
@@ -57,7 +63,7 @@
       var ch = seq[i];
       var node;
       if (badPositions && badPositions[i + 1]) {
-        node = el('mark', '', ch);
+        node = el('mark', '', INVISIBLE_CHARACTERS[ch] ? '?' : ch);
       } else if (ch === 'A' || ch === 'T' || ch === 'G' || ch === 'C') {
         node = el('span', 'b-' + ch, ch);
       } else if (ch === 'U') {

@@ -103,4 +103,77 @@ test('ATAT yields zero GC content', function () {
   assert.strictEqual(result.percentText, '0.0%');
 });
 
+test('positions count in the cleaned sequence (spaces removed first)', function () {
+  var analysis = HelixLogic.analyze('AT GXC');
+  assert.deepStrictEqual(analysis.invalid, [{ char: 'X', position: 4 }]);
+});
+
+test('lowercase invalid letters are reported in upper case', function () {
+  assert.deepStrictEqual(HelixLogic.analyze('atgx').invalid, [{ char: 'X', position: 4 }]);
+});
+
+test('invalid sequences produce no results that could be copied', function () {
+  var analysis = HelixLogic.analyze('ATGXC');
+  assert.strictEqual(analysis.length, undefined);
+  assert.strictEqual(analysis.gc, undefined);
+  assert.strictEqual(analysis.reverseComplement, undefined);
+  assert.strictEqual(analysis.rna, undefined);
+});
+
+test('numbers and dashes are flagged, never silently removed', function () {
+  assert.deepStrictEqual(HelixLogic.analyze('1 ATGC').messages, ['"1" at position 1']);
+  assert.deepStrictEqual(HelixLogic.analyze('ATG-C').messages, ['"-" at position 4']);
+});
+
+test('GC % rounds to one decimal place', function () {
+  assert.strictEqual(HelixLogic.analyze('GCA').gc.percentText, '66.7%');
+  assert.strictEqual(HelixLogic.analyze('GAAAAA').gc.percentText, '16.7%');
+  assert.strictEqual(HelixLogic.analyze('GGCC').gc.percentText, '100.0%');
+});
+
+test('single base works', function () {
+  var analysis = HelixLogic.analyze('G');
+  assert.strictEqual(analysis.length, 1);
+  assert.strictEqual(analysis.reverseComplement, 'C');
+});
+
+test('EcoRI site GAATTC is its own reverse complement', function () {
+  assert.strictEqual(HelixLogic.analyze('GAATTC').reverseComplement, 'GAATTC');
+});
+
+test('Windows line breaks are removed', function () {
+  assert.strictEqual(HelixLogic.analyze('AT\r\nGC').cleaned, 'ATGC');
+});
+
+test('missing input counts as empty', function () {
+  assert.strictEqual(HelixLogic.analyze(null).status, 'empty');
+  assert.strictEqual(HelixLogic.analyze(undefined).status, 'empty');
+});
+
+test('a 10,000-base sequence is analysed correctly', function () {
+  var analysis = HelixLogic.analyze('ATGC'.repeat(2500));
+  assert.strictEqual(analysis.length, 10000);
+  assert.strictEqual(analysis.gc.percentText, '50.0%');
+});
+
+test('invisible zero-width space copied from websites is flagged', function () {
+  var analysis = HelixLogic.analyze('AT\u200BGC');
+  assert.strictEqual(analysis.status, 'invalid');
+  assert.strictEqual(analysis.invalid[0].position, 3);
+  assert.deepStrictEqual(analysis.messages, ['invisible character (U+200B) at position 3']);
+});
+
+test('invisible joiners and byte-order marks are named in errors', function () {
+  [
+    { character: '\u200C', code: 'U+200C' },
+    { character: '\u200D', code: 'U+200D' },
+    { character: '\uFEFF', code: 'U+FEFF' }
+  ].forEach(function (item) {
+    var analysis = HelixLogic.analyze('AT' + item.character + 'GC');
+    assert.deepStrictEqual(analysis.messages, [
+      'invisible character (' + item.code + ') at position 3'
+    ]);
+  });
+});
+
 console.log('All logic tests passed.');
