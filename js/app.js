@@ -145,10 +145,12 @@
     lastResult = null;
 
     if (result.status === 'empty') {
+      input.setAttribute('aria-invalid', 'true');
       showEmpty(result.message);
       input.focus();
       return;
     }
+    input.removeAttribute('aria-invalid');
     if (result.status === 'invalid') {
       showInvalid(result);
       return;
@@ -165,6 +167,7 @@
 
   function resetAll() {
     input.value = '';
+    input.removeAttribute('aria-invalid');
     lastResult = null;
     updateLetterCount();
     hideMessage();
@@ -217,7 +220,10 @@
   }
 
   // ---- Events ----
-  input.addEventListener('input', updateLetterCount);
+  input.addEventListener('input', function () {
+    input.removeAttribute('aria-invalid');
+    updateLetterCount();
+  });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();

@@ -143,6 +143,12 @@ textarea {
 }
 textarea::placeholder { color: #7d8697; letter-spacing: 0; }
 textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+textarea[aria-invalid="true"],
+textarea[aria-invalid="true"]:focus {
+  border-color: var(--error-edge);
+  outline: 2px solid var(--error-edge);
+  outline-offset: 1px;
+}
 
 .hint { margin: 0; color: var(--muted); font-size: 0.9rem; }
 .hint strong { color: var(--text); }
