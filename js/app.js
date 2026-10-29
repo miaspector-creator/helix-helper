@@ -125,8 +125,8 @@
     out.countC.textContent = gc.c;
     out.countAT.textContent = gc.length - gc.gc;
     out.gcWorking.textContent =
-      'G (' + gc.g + ') + C (' + gc.c + ') = ' + gc.gc + ' of ' + gc.length +
-      ' letters → ' + gc.gc + ' ÷ ' + gc.length + ' × 100 = ' + gc.percentText;
+      '(' + gc.g + ' G + ' + gc.c + ' C) ÷ ' + gc.length +
+      ' × 100 = ' + gc.percentText;
 
     // Ring: circumference is 100, so the percentage is the filled length
     gcRing.setAttribute('stroke-dasharray', gc.percent.toFixed(1) + ' 100');
