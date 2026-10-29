@@ -47,6 +47,16 @@ test('lowercase input is accepted and normalized', function () {
   });
 });
 
+test('spaces and line breaks are removed from sequences', function () {
+  var spacedAnalysis = HelixLogic.analyze('AT GC');
+  var lineBreakAnalysis = HelixLogic.analyze('AT\nGC');
+
+  assert.strictEqual(spacedAnalysis.status, 'ok');
+  assert.strictEqual(spacedAnalysis.cleaned, 'ATGC');
+  assert.strictEqual(lineBreakAnalysis.status, 'ok');
+  assert.strictEqual(lineBreakAnalysis.cleaned, 'ATGC');
+});
+
 test('invalid characters are reported with one-based positions', function () {
   var analysis = HelixLogic.analyze('ATGXC');
   assert.strictEqual(analysis.status, 'invalid');
