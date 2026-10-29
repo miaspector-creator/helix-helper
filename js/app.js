@@ -84,7 +84,7 @@
     messageBox.className = 'message message-info';
     messageBox.textContent = '';
     messageBox.appendChild(el('span', 'message-title', message));
-    messageBox.appendChild(el('span', '', 'Or tap "Example sequence" to see how it works.'));
+    messageBox.appendChild(el('span', '', 'Or tap "Try clean example" to see how it works.'));
     messageBox.hidden = false;
   }
 
