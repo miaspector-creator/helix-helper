@@ -24,9 +24,14 @@
   var exampleBtn   = document.getElementById('example-btn');
   var errorExBtn   = document.getElementById('error-example-btn');
   var resetBtn     = document.getElementById('reset-btn');
+  var backBtn      = document.getElementById('back-btn');
   var copyAllBtn   = document.getElementById('copy-all-btn');
   var messageBox   = document.getElementById('message-box');
+  var inputView    = document.getElementById('input-view');
+  var resultsView  = document.getElementById('results-view');
   var results      = document.getElementById('results');
+  var resultsHeading = document.getElementById('results-heading');
+  var resultsLabel = document.getElementById('results-label');
   var statusText   = document.getElementById('status-text');
   var gcRing       = document.getElementById('gc-ring');
 
@@ -86,6 +91,7 @@
   }
 
   function showEmpty(message) {
+    showInputView(false);
     results.hidden = true;
     messageBox.className = 'message message-info';
     messageBox.textContent = '';
@@ -95,6 +101,7 @@
   }
 
   function showInvalid(result) {
+    showInputView(false);
     results.hidden = true;
     var count = result.invalid.length;
     messageBox.className = 'message message-error';
@@ -124,6 +131,8 @@
 
     statusText.textContent = 'Valid sequence: all ' + result.length +
       ' letters are A, T, G or C.';
+    resultsLabel.textContent = result.length + ' ' +
+      (result.length === 1 ? 'letter' : 'letters') + ' · ' + gc.percentText + ' GC';
 
     out.length.textContent = result.length;
     out.gc.textContent = gc.percentText;
@@ -143,6 +152,38 @@
     renderSequence(out.rna, result.rna);
 
     results.hidden = false;
+    if (location.hash !== '#results') location.hash = 'results';
+    showResultsView();
+  }
+
+  function showResultsView() {
+    if (!resultsView.hidden) return;
+    inputView.hidden = true;
+    resultsView.hidden = false;
+    window.scrollTo(0, 0);
+    resultsHeading.focus();
+  }
+
+  function showInputView(shouldFocus) {
+    resultsView.hidden = true;
+    inputView.hidden = false;
+    if (shouldFocus) {
+      window.scrollTo(0, 0);
+      input.focus();
+    }
+  }
+
+  function handleHashChange() {
+    if (location.hash === '#results') {
+      if (lastResult) {
+        showResultsView();
+      } else {
+        history.replaceState(null, '', location.pathname + location.search);
+        showInputView(false);
+      }
+      return;
+    }
+    showInputView(true);
   }
 
   // ---- Main actions ----
@@ -153,7 +194,6 @@
     if (result.status === 'empty') {
       input.setAttribute('aria-invalid', 'true');
       showEmpty(result.message);
-      input.focus();
       return;
     }
     input.removeAttribute('aria-invalid');
@@ -179,7 +219,8 @@
     hideMessage();
     results.hidden = true;
     gcRing.setAttribute('stroke-dasharray', '0 100');
-    input.focus();
+    showInputView(true);
+    if (location.hash === '#results') history.back();
   }
 
   // ---- Copying ----
@@ -240,7 +281,12 @@
   analyzeBtn.addEventListener('click', runAnalysis);
   exampleBtn.addEventListener('click', function () { loadExample(Logic.EXAMPLE_SEQUENCE); });
   errorExBtn.addEventListener('click', function () { loadExample(ERROR_EXAMPLE); });
+  backBtn.addEventListener('click', function () {
+    showInputView(true);
+    if (location.hash === '#results') history.back();
+  });
   resetBtn.addEventListener('click', resetAll);
+  window.addEventListener('hashchange', handleHashChange);
 
   document.querySelectorAll('.btn-copy').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -254,4 +300,8 @@
   });
 
   updateLetterCount();
+  if (location.hash === '#results') {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+  showInputView(false);
 })();

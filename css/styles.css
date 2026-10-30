@@ -49,24 +49,24 @@ body {
 }
 
 /* ---------- Top bar ---------- */
-.topbar {
+.results-topbar {
   position: sticky;
   top: 0;
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 56px;
-  padding: 0 16px;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 0;
   padding-top: env(safe-area-inset-top, 0);
-  background: rgba(15, 19, 29, 0.9);
+  background: rgba(15, 19, 29, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
-.logo { width: 36px; height: 36px; border-radius: 8px; display: block; }
-.hero-logo { display: block; width: 120px; height: 120px; margin: 4px auto 8px; border-radius: 24px; }
-.brand { font-weight: 600; font-size: 1.05rem; }
+.hero-logo { display: block; width: 56px; height: 56px; margin: 0 auto 8px; border-radius: 14px; }
+.results-label { color: var(--muted); font-size: 0.9rem; text-align: right; }
 
 /* ---------- Layout ---------- */
 .app {
@@ -80,7 +80,10 @@ body {
   gap: 14px;
 }
 
+.input-view, .results-view { display: flex; flex-direction: column; gap: 14px; }
+.input-view[hidden], .results-view[hidden] { display: none; }
 .intro h1 { margin: 4px 0 4px; font-size: 1.5rem; line-height: 1.2; }
+.intro { text-align: center; }
 .intro p { margin: 0; color: var(--muted); }
 
 /* ---------- Cards ---------- */
@@ -95,6 +98,8 @@ body {
 }
 #results { display: flex; flex-direction: column; gap: 14px; }
 #results[hidden], .message[hidden] { display: none; }
+.results-heading { margin: 0; font-size: 1.35rem; line-height: 1.2; }
+.results-heading:focus { outline: none; }
 
 .card-head {
   display: flex;
@@ -156,7 +161,7 @@ textarea[aria-invalid="true"]:focus {
 .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .chips-label { color: var(--muted); font-size: 0.9rem; }
 .chip {
-  min-height: 40px;
+  min-height: 44px;
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -198,7 +203,7 @@ textarea[aria-invalid="true"]:focus {
 .btn-full { width: 100%; }
 
 .btn-copy {
-  min-height: 40px;
+  min-height: 44px;
   padding: 6px 14px;
   border-radius: 10px;
   border: 1px solid var(--line);
@@ -211,9 +216,6 @@ textarea[aria-invalid="true"]:focus {
 .btn-copy:hover { background: #313540; }
 
 button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-
-.shortcut { margin: -6px 0 0; color: #7d8697; font-size: 0.8rem; text-align: center; }
-@media (hover: none) { .shortcut { display: none; } }   /* hide on touch phones */
 
 /* ---------- Messages ---------- */
 .message {
