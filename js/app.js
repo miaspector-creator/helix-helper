@@ -30,6 +30,7 @@
   var inputView    = document.getElementById('input-view');
   var resultsView  = document.getElementById('results-view');
   var results      = document.getElementById('results');
+  var transition   = document.getElementById('helix-transition');
   var resultsHeading = document.getElementById('results-heading');
   var resultsLabel = document.getElementById('results-label');
   var statusText   = document.getElementById('status-text');
@@ -49,6 +50,8 @@
   };
 
   var lastResult = null;   // used by "Copy all results"
+  var transitionTimer = null;
+  var transitionActive = false;
 
   // ---- Small helpers ----
 
@@ -125,7 +128,7 @@
     messageBox.hidden = false;
   }
 
-  function showResults(result) {
+  function showResults(result, animateTransition) {
     hideMessage();
     var gc = result.gc;
 
@@ -153,7 +156,34 @@
 
     results.hidden = false;
     if (location.hash !== '#results') location.hash = 'results';
+    if (animateTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      playHelixTransition();
+    } else {
+      showResultsView();
+    }
+  }
+
+  function finishHelixTransition() {
+    if (!transitionActive) return;
+    transitionActive = false;
+    if (transitionTimer !== null) {
+      window.clearTimeout(transitionTimer);
+      transitionTimer = null;
+    }
+    transition.classList.remove('is-active', 'is-leaving');
+    transition.hidden = true;
     showResultsView();
+  }
+
+  function playHelixTransition() {
+    transitionActive = true;
+    transition.hidden = false;
+    transition.classList.remove('is-leaving');
+    transition.classList.add('is-active');
+    transitionTimer = window.setTimeout(function () {
+      transition.classList.add('is-leaving');
+      transitionTimer = window.setTimeout(finishHelixTransition, 100);
+    }, 400);
   }
 
   function showResultsView() {
@@ -175,6 +205,7 @@
 
   function handleHashChange() {
     if (location.hash === '#results') {
+      if (transitionActive) return;
       if (lastResult) {
         showResultsView();
       } else {
@@ -202,7 +233,7 @@
       return;
     }
     lastResult = result;
-    showResults(result);
+    showResults(result, true);
   }
 
   function loadExample(seq) {
@@ -285,6 +316,7 @@
     showInputView(true);
     if (location.hash === '#results') history.back();
   });
+  transition.addEventListener('click', finishHelixTransition);
   resetBtn.addEventListener('click', resetAll);
   window.addEventListener('hashchange', handleHashChange);
 

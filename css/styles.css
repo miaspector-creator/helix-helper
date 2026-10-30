@@ -48,6 +48,50 @@ body {
   z-index: 0;
 }
 
+.helix-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(15, 19, 29, 0.96);
+  opacity: 0;
+  transition: opacity 100ms ease-out;
+}
+.helix-transition[hidden] { display: none; }
+.helix-transition.is-active { opacity: 1; }
+.helix-transition.is-leaving { opacity: 0; }
+.transition-helix {
+  width: 144px;
+  height: 216px;
+  overflow: visible;
+  filter: drop-shadow(0 0 12px rgba(131, 217, 232, 0.3));
+}
+.transition-strand {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 14 8;
+  animation: helix-flow 450ms linear infinite;
+}
+.strand-one { stroke: var(--green); }
+.strand-two { stroke: var(--purple); animation-delay: -225ms; }
+.transition-rungs line {
+  stroke: var(--cyan);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.8;
+  animation: rung-pulse 450ms ease-in-out infinite alternate;
+}
+.transition-rungs line:nth-child(even) { animation-delay: -225ms; }
+@keyframes helix-flow {
+  to { stroke-dashoffset: -44; }
+}
+@keyframes rung-pulse {
+  to { opacity: 0.3; }
+}
+
 /* ---------- Top bar ---------- */
 .results-topbar {
   position: sticky;
@@ -362,4 +406,6 @@ mark {
 @media (prefers-reduced-motion: reduce) {
   .ring-fill { transition: none; }
   .btn-primary:active { transform: none; }
+  .helix-transition { transition: none; }
+  .transition-strand, .transition-rungs line { animation: none; }
 }
