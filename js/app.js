@@ -9,6 +9,8 @@
   'use strict';
 
   var Logic = window.HelixLogic;
+  var HELIX_TRANSITION_DURATION = 800;
+  var HELIX_FADE_DURATION = 100;
   var ERROR_EXAMPLE = 'ATGXC';
   var INVISIBLE_CHARACTERS = {
     '\u200B': true,
@@ -182,8 +184,8 @@
     transition.classList.add('is-active');
     transitionTimer = window.setTimeout(function () {
       transition.classList.add('is-leaving');
-      transitionTimer = window.setTimeout(finishHelixTransition, 100);
-    }, 400);
+      transitionTimer = window.setTimeout(finishHelixTransition, HELIX_FADE_DURATION);
+    }, HELIX_TRANSITION_DURATION - HELIX_FADE_DURATION);
   }
 
   function showResultsView() {
