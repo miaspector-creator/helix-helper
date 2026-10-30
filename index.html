@@ -31,62 +31,59 @@
     </g>
   </svg>
 
-  <header class="topbar">
-    <img class="logo" src="images/logo-mark.png" alt="" width="36" height="36">
-    <span class="brand">Helix Helper</span>
-  </header>
-
   <main class="app">
-    <div class="intro">
-      <img class="hero-logo" src="images/logo-mark.png" alt="Helix Helper logo" width="120" height="120">
-      <h1>DNA Sequence Analyzer</h1>
-      <p>Paste a DNA sequence to get its length, GC content and reverse complement.</p>
-    </div>
-
-    <!-- 1. Input -->
-    <section class="card" aria-labelledby="input-label">
-      <div class="card-head">
-        <label id="input-label" for="sequence-input" class="card-title">
-          <svg class="icon icon-green" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7.5 14h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Your DNA sequence
-        </label>
-        <span id="letter-count" class="badge" aria-live="polite">0 letters</span>
+    <section id="input-view" aria-labelledby="input-page-title">
+      <div class="intro">
+        <img class="hero-logo" src="images/logo-mark.png" alt="Helix Helper logo" width="56" height="56">
+        <h1 id="input-page-title">DNA Sequence Analyzer</h1>
+        <p>Fast, clear DNA sequence results.</p>
       </div>
 
-      <textarea
-        id="sequence-input"
-        rows="4"
-        placeholder="Paste your DNA sequence"
-        autocapitalize="characters"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"
-        aria-describedby="input-hint"></textarea>
+      <section class="card" aria-labelledby="input-label">
+        <div class="card-head">
+          <label id="input-label" for="sequence-input" class="card-title">
+            <svg class="icon icon-green" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7.5 14h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Your DNA sequence
+          </label>
+          <span id="letter-count" class="badge" aria-live="polite">0 letters</span>
+        </div>
 
-      <p id="input-hint" class="hint">Use only <strong>A, T, G, C</strong>. Lower case is fine, and spaces and line breaks are removed for you.</p>
+        <textarea
+          id="sequence-input"
+          rows="4"
+          placeholder="Paste your DNA sequence"
+          autocapitalize="characters"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-describedby="input-hint"></textarea>
 
-      <div class="chips">
-        <span class="chips-label">Try:</span>
-        <button type="button" id="example-btn" class="chip chip-green">Try clean example</button>
-        <button type="button" id="error-example-btn" class="chip">Try example with errors</button>
+        <p id="input-hint" class="hint">Only A, T, G and C.</p>
+
+        <div class="chips">
+          <span class="chips-label">Try:</span>
+          <button type="button" id="example-btn" class="chip chip-green">Try clean example</button>
+          <button type="button" id="error-example-btn" class="chip">Try example with errors</button>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="analyze-btn" class="btn btn-primary">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Analyze sequence
+        </button>
       </div>
+
+      <section id="message-box" class="message" role="alert" hidden></section>
     </section>
 
-    <!-- 2. Actions -->
-    <div class="actions">
-      <button type="button" id="analyze-btn" class="btn btn-primary">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Analyze sequence
-      </button>
-      <button type="button" id="reset-btn" class="btn btn-secondary">Reset</button>
-    </div>
-    <p class="shortcut">Tip: on a keyboard, press Ctrl/Cmd + Enter to analyze.</p>
-
-    <!-- Messages: empty box / invalid characters -->
-    <section id="message-box" class="message" role="alert" hidden></section>
-
-    <!-- 3. Results -->
-    <div id="results" hidden>
+    <section id="results-view" aria-labelledby="results-heading" hidden>
+      <div class="results-topbar">
+        <button type="button" id="back-btn" class="btn btn-secondary">← Back</button>
+        <span id="results-label" class="results-label"></span>
+      </div>
+      <h1 id="results-heading" class="results-heading" tabindex="-1">Analysis results</h1>
+      <div id="results" hidden>
       <div class="status status-ok" role="status">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span id="status-text">Valid sequence</span>
@@ -171,9 +168,11 @@
       </section>
 
       <button type="button" id="copy-all-btn" class="btn btn-secondary btn-full">Copy all results</button>
-    </div>
+      </div>
+      <button type="button" id="reset-btn" class="btn btn-secondary btn-full">Analyze a new sequence</button>
 
-    <footer class="footer">Runs entirely on your phone. Nothing is saved or sent anywhere.</footer>
+      <footer class="footer">Runs entirely on your phone. Nothing is saved or sent anywhere.</footer>
+    </section>
   </main>
 
   <script src="js/logic.js"></script>
