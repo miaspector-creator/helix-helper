@@ -18,6 +18,7 @@
   --error-edge: #ff6b5e;
   --info-bg: #1b2638;
   --info-edge: #83d9e8;
+  --helix-duration: 800ms;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
   color-scheme: dark;
@@ -55,6 +56,7 @@ body {
   display: grid;
   place-items: center;
   overflow: hidden;
+  perspective: 600px;
   background: rgba(15, 19, 29, 0.96);
   opacity: 0;
   transition: opacity 100ms ease-out;
@@ -67,13 +69,15 @@ body {
   height: 216px;
   overflow: visible;
   filter: drop-shadow(0 0 12px rgba(131, 217, 232, 0.3));
+  transform-style: preserve-3d;
+  animation: helix-twist var(--helix-duration) ease-in-out 1 both;
 }
 .transition-strand {
   fill: none;
   stroke-width: 4;
   stroke-linecap: round;
   stroke-dasharray: 14 8;
-  animation: helix-flow 450ms linear infinite;
+  animation: helix-flow var(--helix-duration) linear 1 both;
 }
 .strand-one { stroke: var(--green); }
 .strand-two { stroke: var(--purple); animation-delay: -225ms; }
@@ -82,11 +86,14 @@ body {
   stroke-width: 2;
   stroke-linecap: round;
   opacity: 0.8;
-  animation: rung-pulse 450ms ease-in-out infinite alternate;
+  animation: rung-pulse var(--helix-duration) ease-in-out 1 alternate both;
 }
 .transition-rungs line:nth-child(even) { animation-delay: -225ms; }
 @keyframes helix-flow {
   to { stroke-dashoffset: -44; }
+}
+@keyframes helix-twist {
+  to { transform: rotateY(360deg); }
 }
 @keyframes rung-pulse {
   to { opacity: 0.3; }
